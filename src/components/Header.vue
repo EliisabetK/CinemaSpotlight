@@ -21,7 +21,7 @@
   background-position-x: center;
   width: 99.6%;
   padding: .5em 0em .5em 0em;
-  background-color: #a5a5a5;
+  background-color: #768A96;
   border-radius: 10px;
   display: flex;
   flex-direction: column; 
@@ -29,18 +29,19 @@
 }
 
 .header p {
-  font-size: 1.3em;
+  font-size: 1.5em;
   margin-bottom: -0em;
   margin-top: -0em;
+  color: #ECECEA;
 }
 
 .header a {
-  color: rgb(0, 0, 0);
+  color: #ECECEA;
   text-decoration: none;
   font-size: 1em;
 }
 .header a:hover {
-  color: white;
+  color: #afcef1;
   text-decoration: none;
   font-size: 1em;
 }
@@ -48,5 +49,6 @@
 .separator {
   font-size: 1.3em;
   margin: 0 10px;
+  color: #ECECEA;
 }
   </style>

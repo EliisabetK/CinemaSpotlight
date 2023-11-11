@@ -26,6 +26,7 @@ body {
   font-family: monospace, sans-serif;
   margin: 0;
   padding: 0.2em;
+  background-color: #E6E6E6
 }
 
   /* Home page CSS elements */
@@ -41,12 +42,6 @@ body {
     object-fit:cover;
   }
   
-  .username{
-    color: #232323;
-    font-size: 1em;
-    margin-top: -1.5em;
-  }
-  
   .container {
     display: flex;
     min-height: calc(100vh - 4.5em);
@@ -55,7 +50,7 @@ body {
   
   .left-column, .right-column {
     flex: 1;
-    background-color: #a5a5a5;
+    background-color: #768A96;
     border-radius: 10px;
     margin-top: 5em;
     position: sticky;
@@ -84,14 +79,14 @@ body {
   }
   
   main > div > div { /*child selector*/
-    background-color: rgb(224, 224, 224);
+    background-color: #aabdc9;
     border-radius: 10px;  
   }
   
-  .post p { /*descendant selector?*/
+  p { /*descendant selector?*/
+    color: #29353C;
     font-size: 1.5em;
-    color: #212121;
-    margin-bottom: 0em; 
+    margin-bottom: 0.25em; 
   }
   
   .post{
@@ -100,12 +95,6 @@ body {
   
   .post ~ .post { /*general sibling selector*/
     margin-top: 1em;
-  }
-  
-  .profile-image + p, .post-date {
-    color: #454545;
-    font-size: 1em;
-    margin-top: -1em;
   }
   
   .like-image{
@@ -127,149 +116,25 @@ body {
       font-size: 0.9em;
     }
     .profile-image + p {
-      color: #434242; 
-      font-size: 0.7em;
+      color: #29353C; 
+      font-size: 1em;
     }
-    
   }
   
   .username {
-    color: #232323;
-    font-size: 1em;
-    margin-top: -3em;
-    margin-left: 3.5em; 
+    color: #29353C;
+    margin-top: -2.7em;
+    margin-left: 3.3em; 
     margin-bottom: 2em;
     display: flex;
     align-items: center; 
+    font-size: 1.2em;
   }
 
-  /* dropdown menu CSS elements */
-
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    right: 1em;
-    background-color: #dedede;
-    border-radius: 10px;
-    padding: 0.2em;
-    min-width: 10em;
-    box-shadow: 0 0.1em 0.2em 0 rgba(0,0,0,0.2);
-  }
-  
-  .dropdown-content p{
-    margin: 0.5em;
+  .post-header p{
+    font-size: 1.1em;
+    margin-top: -1.2em;
+    color: #43494d;
   }
 
-  /* addPost.html CSS elements */
-
-  .postbodytext {
-    grid-area: postbodytext;
-    text-align: right;
-  }
-  .selectfiletext {
-    grid-area: selectfiletext;
-    text-align: right;
-  }
-  .textarea {
-    grid-area: textarea;
-    padding-bottom: 1.2em;
-  }
-  .choosefile {
-      grid-area: choosefile;
-      text-align: left;
-      padding-left: 1.2em;
-  }
-  .createpost {
-      grid-area: createpost
-  }
-
-  .box{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  }
-
-  .gridbox{
-      display: grid;
-      grid-template-areas:
-          'postbodytext textarea textarea'
-          'selectfiletext choosefile choosefile'
-          'createpost createpost createpost';
-          margin-top: 1.2em;
-      }
-
-  .box > div{
-      width: 20em;
-      height: 20em;
-      background-color: rgb(224, 224, 224);
-      border-radius: 10px;
-      text-align: center;
-      margin: 10em auto;
-  }
- 
-  label input{
-      outline: none;
-      border: none;
-      padding: 0.5em 0em;
-      width: 32%;
-      margin: -0.2em;
-  }
-
-  input::placeholder{
-      color: rgb(173, 173, 173);
-      padding: 0.2em;
-  }
-
-  button{
-      display: inline-block;
-      font-family: monospace, sans-serif;
-      font-size: 14px;
-      color: rgb(255, 255, 255);
-      border: none;
-      text-align: center;
-      padding: 0.5em;
-      margin: 0.3em;
-      margin-bottom: 3em;
-      width: 12em;
-  }
-
-  .createpost > button {
-      background-color: rgb(0, 0, 195);
-  }
-
-  .choosefile > button {
-      background-color: rgb(103, 103, 103);
-  }
-
-  .createpost button:hover{
-      background-color: rgb(0, 0, 118);
-      color: rgb(159, 159, 159);
-  }
-
-  .choosefile button:hover{
-      background-color: rgb(92, 92, 92);
-      color: rgb(159, 159, 159);
-  }
-
-  textarea{
-      border: none;
-      width: 16em;
-      height: 10em;
-      resize: none;
-  }
-
-  button{
-      display: inline-block;
-      background-color: rgb(0, 0, 195);
-      color: rgb(255, 255, 255);
-      text-align: center;
-      padding: 0.5em;
-      margin: 0.3em;
-      margin-bottom: 3em;
-  }
 </style>

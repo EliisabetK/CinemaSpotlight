@@ -1,3 +1,4 @@
+// Postide tegemine peab olema posts.js ja Post.vue failides
 <template>
   <div>
     <div class="container">

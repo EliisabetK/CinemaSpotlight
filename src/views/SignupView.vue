@@ -47,7 +47,7 @@ export default {
     text-align: center;
     margin: 10em auto;
 }
-.box a{
+a{
     color: rgb(89, 80, 255);
     text-decoration: none;
 }
@@ -79,7 +79,78 @@ button:hover{
     color: rgb(159, 159, 159);
 }
 
-.box a:hover{
+a:hover{
     color: rgb(42, 38, 125);
 }
+
+
+.box > div{
+      width: 20em;
+      height: 20em;
+      background-color: rgb(224, 224, 224);
+      border-radius: 10px;
+      text-align: center;
+      margin: 10em auto;
+  }
+ 
+  label input{
+      outline: none;
+      border: none;
+      padding: 0.5em 0em;
+      width: 32%;
+      margin: -0.2em;
+  }
+
+  input::placeholder{
+      color: rgb(173, 173, 173);
+      padding: 0.2em;
+  }
+
+  button{
+      display: inline-block;
+      font-family: monospace, sans-serif;
+      font-size: 14px;
+      color: rgb(255, 255, 255);
+      border: none;
+      text-align: center;
+      padding: 0.5em;
+      margin: 0.3em;
+      margin-bottom: 3em;
+      width: 12em;
+  }
+
+  .createpost > button {
+      background-color: rgb(0, 0, 195);
+  }
+
+  .choosefile > button {
+      background-color: rgb(103, 103, 103);
+  }
+
+  .createpost button:hover{
+      background-color: rgb(0, 0, 118);
+      color: rgb(159, 159, 159);
+  }
+
+  .choosefile button:hover{
+      background-color: rgb(92, 92, 92);
+      color: rgb(159, 159, 159);
+  }
+
+  textarea{
+      border: none;
+      width: 16em;
+      height: 10em;
+      resize: none;
+  }
+
+  button{
+      display: inline-block;
+      background-color: rgb(0, 0, 195);
+      color: rgb(255, 255, 255);
+      text-align: center;
+      padding: 0.5em;
+      margin: 0.3em;
+      margin-bottom: 3em;
+  }
 </style>

@@ -19,7 +19,7 @@
   <style scoped>
   .footer {
   display: flex;
-  background-color: #a5a5a5;
+  background-color: #768A96;
   align-items: center;
   justify-content: space-evenly;
   position: fixed;
@@ -36,12 +36,13 @@
 
 footer p {
   font-size: 1em;
-  color: #444444;
+  color: #ECECEA;
   margin-left: 1em;
   margin-right: 1em;
+  margin-bottom: 1em;
 }
 
 .separator{
-  color: #444444;
+  color: #ECECEA;
 }
   </style>
