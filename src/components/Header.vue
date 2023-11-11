@@ -21,7 +21,7 @@
   background-position-x: center;
   width: 99.6%;
   padding: .5em 0em .5em 0em;
-  background-color: #768A96;
+  background-color: #7597ad;
   border-radius: 10px;
   display: flex;
   flex-direction: column; 
@@ -41,7 +41,7 @@
   font-size: 1em;
 }
 .header a:hover {
-  color: #afcef1;
+  color: #E4C49E;
   text-decoration: none;
   font-size: 1em;
 }

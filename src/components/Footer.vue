@@ -19,7 +19,7 @@
   <style scoped>
   .footer {
   display: flex;
-  background-color: #768A96;
+  background-color: #7597ad;
   align-items: center;
   justify-content: space-evenly;
   position: fixed;

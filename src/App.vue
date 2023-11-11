@@ -26,7 +26,7 @@ body {
   font-family: monospace, sans-serif;
   margin: 0;
   padding: 0.2em;
-  background-color: #E6E6E6
+  background-color: #eae3d9
 }
 
   /* Home page CSS elements */
@@ -50,7 +50,7 @@ body {
   
   .left-column, .right-column {
     flex: 1;
-    background-color: #768A96;
+    background-color: #7597ad;
     border-radius: 10px;
     margin-top: 5em;
     position: sticky;
@@ -79,12 +79,12 @@ body {
   }
   
   main > div > div { /*child selector*/
-    background-color: #aabdc9;
+    background-color: #CBCDBC;
     border-radius: 10px;  
   }
   
   p { /*descendant selector?*/
-    color: #29353C;
+    color: #293c2e;
     font-size: 1.5em;
     margin-bottom: 0.25em; 
   }
@@ -116,13 +116,13 @@ body {
       font-size: 0.9em;
     }
     .profile-image + p {
-      color: #29353C; 
+      color: #293c2e; 
       font-size: 1em;
     }
   }
   
   .username {
-    color: #29353C;
+    color: #293c2e;
     margin-top: -2.7em;
     margin-left: 3.3em; 
     margin-bottom: 2em;
@@ -134,7 +134,7 @@ body {
   .post-header p{
     font-size: 1.1em;
     margin-top: -1.2em;
-    color: #43494d;
+    color: #454d43;
   }
 
 </style>
