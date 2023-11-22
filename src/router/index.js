@@ -5,7 +5,7 @@ import SignupView from '../views/SignupView.vue';
 const routes = [
   {
     path: '/',
-    name: 'main',
+    name: 'home',
     component: MainView
   },
   {
