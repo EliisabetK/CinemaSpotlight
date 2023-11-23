@@ -1,91 +1,71 @@
 <template>
-  <div id="postDiv" ref="dynamicContent"></div>
+  <div id="postDiv" ref="dynamicContent">
+    <div class="post">
+      <div class="post-header">
+        <div class="profile-image-and-username">
+          <img :src="require('@/assets/icon.png')" alt="Profile Image" class="profile-image" />
+          <span class="username">{{ creator_name }}</span>
+        </div>
+        <p class="post-date">{{ formatDate(post_date) }}</p>
+      </div>
+      <p class="post-content">{{ post_text }}</p>
+      <div v-if="image_url" class="image-container">
+        <img :src="image_url" alt="Post Image" class="post-image" />
+      </div>
+      <div class="like-container">
+        <img
+          src="@/assets/thumb.png"
+          alt="Like Icon"
+          class="like-image"
+          @click="handleLikeClick"
+        />
+        <p class="like-count">Likes: {{ likeCount }}</p>
+      </div>
+    </div>
+  </div>
 </template>
-  
-  <script>
-  let self = this;
-  export default {
-        name: 'Post',
-        props: ['post_date','post_text','creator_name','image_url'],
-        mounted(){
-          function formatDate(dateString) {
-                    const postDate = new Date(dateString);
-                    const currentDate = new Date();
-                    const timeDifference = currentDate - postDate;
-                    
-                    // if the post is less than a day old it shows how many hours ago it was created
-                    if (timeDifference < 24 * 60 * 60 * 1000) {
-                        const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
-                        return `${hoursAgo} hours ago`;
-                    } else {
-                        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-                        return postDate.toLocaleDateString(undefined, options);
-                    }
-                }
-                const postElement = document.createElement('div');
-                postElement.classList.add('post');
 
-                const postHeader = document.createElement('div');
-                postHeader.classList.add('post-header');
-                
-                const profileImageAndUserName = document.createElement('div');
+<script>
+export default {
+  name: 'Post',
+  props: ['post_date', 'post_text', 'creator_name', 'image_url'],
+  data() {
+    return {
+      likeCount: 0,
+    };
+  },
+  mounted() {
+  },
+  methods: {
+    formatDate(dateString) {
+      const postDate = new Date(dateString);
+      const currentDate = new Date();
+      const timeDifference = currentDate - postDate;
 
-                // profile image
-                const profileImage = document.createElement('img');
-                profileImage.src = require('@/assets/icon.png'); // Use require to specify the image path
-                profileImage.alt = "Profile Image";
-                profileImage.classList.add('profile-image');
-                profileImageAndUserName.append(profileImage);
-                
-                // username
-                const userName = document.createElement('text');
-                userName.textContent = this.creator_name;
-                userName.classList.add('username');
-                profileImageAndUserName.append(userName)
+      if (timeDifference < 24 * 60 * 60 * 1000) {
+        const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
+        return `${hoursAgo} hours ago`;
+      } else {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return postDate.toLocaleDateString(undefined, options);
+      }
+    },
+    handleLikeClick() {
+      this.likeCount++;
+    },
+  },
+};
+</script>
 
-                postHeader.appendChild(profileImageAndUserName)
+<style scoped>
+.post {
+  background-color: rgb(186, 202, 210);
+  border-radius: 10px;
+  padding: 1em;
+  margin-bottom: 1em;
+}
 
-                // date
-                const postDate = document.createElement('p');
-                postDate.textContent = formatDate(this.post_date);
-                postDate.classList.add('post-date');
-                postHeader.appendChild(postDate);
-
-                // add header to element
-                postElement.appendChild(postHeader);
-
-                // text
-                const postContent = document.createElement('p');
-                postContent.textContent = this.post_text;
-
-                // image if it exists
-                const imageContainer = document.createElement('div');
-                const postImage = document.createElement('img');
-                if (this.image_url) {
-                    postImage.src = this.image_url;
-                    postImage.alt = "Post Image";
-                    postImage.classList.add('postImage');
-                    imageContainer.appendChild(postImage);
-                    postElement.appendChild(imageContainer);
-                }
-                
-                // add text to postElement
-                postElement.appendChild(postContent);
-
-                // thumbs up icon
-                const thumbsUpIcon = document.createElement('img');
-                thumbsUpIcon.src = require('@/assets/thumb.png');
-                thumbsUpIcon.alt = "Like Icon";
-                thumbsUpIcon.classList.add('like-image');
-
-                postElement.appendChild(thumbsUpIcon);
-                const placeholder = this.$refs.dynamicContent;
-                placeholder.appendChild(postElement);
-                }
-        }
-  </script>
-  <style scoped>
-  .post-header {
+.post-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -93,66 +73,76 @@
 
 .profile-image {
   width: 40px;
-  height: 40px; 
+  height: 40px;
   object-fit: cover;
   margin-bottom: 1em;
   margin-right: 1em;
 }
 
-div {
-    min-width: 100px;
-    display: block;
-    visibility: visible;
-    opacity: 1;
+.username {
+  color: #293c2e;
+  margin-top: -2.7em;
+  margin-left: 3.3em;
+  margin-bottom: 0.5em; 
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
 }
 
-main > div > div { /*child selector*/
-  background-color: rgb(224, 224, 224);
-  border-radius: 10px;  
-}
-
-.post p { /*descendant selector?*/
+.post p {
   font-size: 1.5em;
-  color: #212121;
-  margin-bottom: 0em; 
+  color: #293c2e;
+  margin-bottom: 0.5em; 
 }
 
-.post{
-  padding: 1em;
+.post-date {
+  font-size: 1.1em;
+  margin-top: -1.2em;
+  color: #454d43;
 }
 
-.post ~ .post { /*general sibling selector*/
-  margin-top: 1em;
+.image-container {
+  margin-bottom: 1em; 
 }
 
-.profile-image + p {
-  color: #434242; 
-  font-size: 1em;
-  margin-top: -0.25em;
+.post-image {
+  width: 50%;
+  height: auto;
+  border-radius: 8px;
 }
-.like-image{
-  margin-bottom: -0.25em;
+
+.like-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.like-image {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.like-count {
+  font-size: 1.5em;
+  color: #434242;
 }
 
 @media (max-width: 600px) {
-  .postImage{
-    width:100px;
-    height: 100px;
-    object-fit:cover;
-  }
   .profile-image {
     width: 30px;
     height: 30px;
     object-fit: cover;
   }
+
   .post p {
     font-size: 0.9em;
+    margin-bottom: 0.25em;
   }
-  .profile-image + p {
-    color: #434242; 
-    font-size: 0.7em;
-  }
-  
-}
-  </style>
 
+  .username {
+    font-size: 1em;
+    margin-bottom: 0.25em;
+  }
+}
+</style>
