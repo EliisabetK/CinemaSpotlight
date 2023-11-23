@@ -1,17 +1,14 @@
 <template>
-    <div id="postDiv">
-        {{ displayPost() }}
-    </div>
-  </template>
+  <div id="postDiv" ref="dynamicContent"></div>
+</template>
   
   <script>
   let self = this;
   export default {
         name: 'Post',
         props: ['post_date','post_text','creator_name','image_url'],
-        methods: {
-            displayPost() {
-                function formatDate(dateString) {
+        mounted(){
+          function formatDate(dateString) {
                     const postDate = new Date(dateString);
                     const currentDate = new Date();
                     const timeDifference = currentDate - postDate;
@@ -82,11 +79,10 @@
                 thumbsUpIcon.classList.add('like-image');
 
                 postElement.appendChild(thumbsUpIcon);
-                
-                if (document.getElementById("postDiv")) document.getElementById("postDiv").appendChild(postElement);
+                const placeholder = this.$refs.dynamicContent;
+                placeholder.appendChild(postElement);
                 }
-  } 
-  }
+        }
   </script>
   <style scoped>
   .post-header {

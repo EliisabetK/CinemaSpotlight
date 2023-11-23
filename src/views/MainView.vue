@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <div class="container">
@@ -8,10 +7,10 @@
         <div>
           <Post
           v-for="post in postList"
-           :post_date= post.date
-           :post_text= post.text
-           :creator_name= post.creator_name
-           :image_url= post.image_url
+           :post_date= "post.date"
+           :post_text= "post.text"
+           :creator_name= "post.creator_name"
+           :image_url= "post.image_url"
         />
         </div>
       </main>
@@ -29,15 +28,15 @@ export default {
     name: "MainView",
     data: function() {
       return {
-
       }
-    }, computed: {
+    }, 
+    computed: {
       postList() {
         return this.$store.state.postList;
-    }
+      }
     },
     components: {
-      Post: Post
+      Post,
     }
 }
 //console.log("postList found??", postList[0].text)

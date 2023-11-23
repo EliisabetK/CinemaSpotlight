@@ -11,10 +11,10 @@
                         <b>Password:</b>
                     </div>
                     <div class="inputs">
-                        <label for="email">
+                        <label>
                             <input type="email" placeholder="Email" required>
                         </label>
-                        <label for="password">
+                        <label>
                             <input type="password" v-model="password" placeholder="Password" required>
                         </label>
                     </div>
