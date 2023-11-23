@@ -46,7 +46,8 @@ body {
   
   .container {
     display: flex;
-    min-height: calc(100vh - 4.5em);
+    /*min-height: calc(100vh - 4.5em);*/
+    max-height: calc(100vh - 6.5em);
     column-gap: 3em;
   }
   

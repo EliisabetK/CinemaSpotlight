@@ -7,15 +7,19 @@
         <div>
           <Post
           v-for="post in postList"
+           :id="post.id"
            :post_date= "post.date"
            :post_text= "post.text"
            :creator_name= "post.creator_name"
            :image_url= "post.image_url"
+           :like_count= "post.likeCount"
         />
         </div>
       </main>
-
       <aside class="right-column"></aside>
+    </div>
+    <div class="resetLikesButton">
+      <button v-on:click="resetLikeCount">Reset likes</button>
     </div>
   </div>
 </template>
@@ -37,6 +41,11 @@ export default {
     },
     components: {
       Post,
+    },
+    methods:{
+      resetLikeCount: function(){
+        this.$store.commit("resetLikeCount");
+      }
     }
 }
 //console.log("postList found??", postList[0].text)
@@ -46,4 +55,14 @@ export default {
 </script>
 
 <style>
+.resetLikesButton{
+  display: flex;
+  justify-content: center;
+}
+button{
+  display: flex;
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 5px;
+}
 </style>

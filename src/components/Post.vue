@@ -19,7 +19,7 @@
           class="like-image"
           @click="handleLikeClick"
         />
-        <p class="like-count">Likes: {{ likeCount }}</p>
+        <p class="like-count">Likes: {{ like_count }}</p>
       </div>
     </div>
   </div>
@@ -28,13 +28,10 @@
 <script>
 export default {
   name: 'Post',
-  props: ['post_date', 'post_text', 'creator_name', 'image_url'],
+  props: ['id', 'post_date', 'post_text', 'creator_name', 'image_url', 'like_count'],
   data() {
     return {
-      likeCount: 0,
     };
-  },
-  mounted() {
   },
   methods: {
     formatDate(dateString) {
@@ -50,8 +47,8 @@ export default {
         return postDate.toLocaleDateString(undefined, options);
       }
     },
-    handleLikeClick() {
-      this.likeCount++;
+    handleLikeClick: function() {
+      this.$store.commit("incrementLikeCount", this.id);
     },
   },
 };
