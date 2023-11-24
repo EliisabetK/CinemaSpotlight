@@ -123,9 +123,9 @@ a:hover{
 
 
 .box > div{
-      width: 22em;
+      width: 25em;
       height: 20em;
-      background-color: rgb(224, 224, 224);
+      background-color: rgb(186, 202, 210);
       border-radius: 10px;
       text-align: center;
       margin: 8em auto;

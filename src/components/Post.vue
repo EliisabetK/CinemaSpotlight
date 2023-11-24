@@ -8,10 +8,10 @@
         </div>
         <p class="post-date">{{ formatDate(post_date) }}</p>
       </div>
-      <p class="post-content">{{ post_text }}</p>
       <div v-if="image_url" class="image-container">
         <img :src="image_url" alt="Post Image" class="post-image" />
       </div>
+      <p class="post-content">{{ post_text }}</p>
       <div class="like-container">
         <img
           src="@/assets/thumb.png"
@@ -66,6 +66,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 0.5em;
 }
 
 .profile-image {
@@ -86,16 +87,16 @@ export default {
   font-size: 1.2em;
 }
 
-.post p {
+.post p{
   font-size: 1.5em;
-  color: #293c2e;
+  color: #1e2b21;
   margin-bottom: 0.5em; 
 }
 
-.post-date {
-  font-size: 1.1em;
-  margin-top: -1.2em;
-  color: #454d43;
+.profile-image-and-username + p {
+  margin-top: 0.5em;
+  color: #293c2e;
+  font-size: 1.2em;
 }
 
 .image-container {
@@ -112,17 +113,24 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: -0.5em;
+  margin-bottom: -0.5em;
 }
 
 .like-image {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+.like-image:active{
+  width: 40.5px;
+  height: 40.5px;
   margin-right: 5px;
 }
 
 .like-count {
   font-size: 1.5em;
-  color: #434242;
+  color: #293c2e;
 }
 
 @media (max-width: 600px) {

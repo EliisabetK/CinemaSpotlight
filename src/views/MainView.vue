@@ -59,12 +59,42 @@ export default {
   display: flex;
   justify-content: center;
 }
+.resetLikesButton > button:hover{
+  background-color: rgb(160, 197, 235);
+}
+.resetLikesButton > button:active{
+  padding: 0.53em;
+}
 .resetLikesButton > button{
   display: flex;
-  margin: 0.5em;
+  margin: 0.25em;
   padding: 0.5em;
-  background-color: rgb(135, 185, 235);
+  background-color: #85abc4;
   border: none;
   border-radius: 10%;
+  font-size: 1em;
+  color: rgb(24, 31, 31);
 }
+.container {
+    display: flex;
+    /*min-height: calc(100vh - 4.5em);*/
+    max-height: calc(100vh - 6.5em);
+    column-gap: 3em;
+  }
+  
+  .left-column, .right-column {
+    flex: 1;
+    background-color: #7597ad;
+    border-radius: 10px;
+    margin-top: 5em;
+    position: sticky;
+    z-index: -1;
+  }
+  
+  main {
+    margin-top: 5em;
+    flex: 3; 
+    overflow-y: auto; 
+    max-height: calc(100vh - 10em); 
+  }
 </style>
