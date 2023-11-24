@@ -59,10 +59,12 @@ export default {
   display: flex;
   justify-content: center;
 }
-button{
+.resetLikesButton > button{
   display: flex;
   margin: 0.5em;
   padding: 0.5em;
-  border-radius: 5px;
+  background-color: rgb(135, 185, 235);
+  border: none;
+  border-radius: 10%;
 }
 </style>
