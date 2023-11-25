@@ -28,7 +28,7 @@ body {
   font-family: monospace, sans-serif;
   margin: 0;
   padding: 0.2em;
-  background-color: #eae3d9
+  background-color: #eae3d9;
 }
 
 </style>

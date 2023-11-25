@@ -86,19 +86,17 @@ export default {
     justify-content: center;
 }
 
-a{
-    color: rgb(89, 80, 255);
-    text-decoration: none;
-}
 .inputs > label > input{
     outline: none;
     border: none;
-    padding: 0.5em 0em;
-    margin: 0.6em;
+    padding: 0.6em 0.2em;
+    margin: 0.8em;
 }
 
 input::placeholder{
     color: rgb(173, 173, 173);
+    font-size: 1.1em;
+    padding: 0.2em;
 }
 
 button{
@@ -113,14 +111,9 @@ button{
 }
 
 button:hover{
-    background-color: rgb(0, 0, 118);
-    color: rgb(159, 159, 159);
+    background-color: rgb(83, 83, 230);
+    color: rgb(247, 247, 247);
 }
-
-a:hover{
-    color: rgb(42, 38, 125);
-}
-
 
 .box > div{
       width: 25em;
@@ -130,17 +123,13 @@ a:hover{
       text-align: center;
       margin: 8em auto;
       margin-bottom: 0em;
-  }
-
-  input::placeholder{
-      color: rgb(173, 173, 173);
-      padding: 0.2em;
+      padding: 3em;
   }
 
   button{
       display: inline-block;
       font-family: monospace, sans-serif;
-      font-size: 14px;
+      font-size: 17px;
       color: rgb(255, 255, 255);
       border: none;
       text-align: center;
@@ -148,24 +137,6 @@ a:hover{
       margin: 0.3em;
       margin-bottom: 3em;
       width: 12em;
-  }
-
-  .createpost > button {
-      background-color: rgb(0, 0, 195);
-  }
-
-  .choosefile > button {
-      background-color: rgb(103, 103, 103);
-  }
-
-  .createpost button:hover{
-      background-color: rgb(0, 0, 118);
-      color: rgb(159, 159, 159);
-  }
-
-  .choosefile button:hover{
-      background-color: rgb(92, 92, 92);
-      color: rgb(159, 159, 159);
   }
 
   textarea{
@@ -188,7 +159,7 @@ a:hover{
   .errors{
     display: flex;
     flex-direction: column;
-    font-size: small;
+    font-size: 1.1em;
     padding-top: 1.5em;
   }
   .form{
@@ -205,6 +176,7 @@ a:hover{
   .text{
     display: flex;
     flex-direction: column;
+    font-size: 1.3em;
   }
   .text > b{
     text-align: right;
@@ -215,4 +187,9 @@ a:hover{
     display: flex;
     flex-direction: column;
   }
+  p{
+    font-size: 1.3em;  
+    color: #425546;
+}
+ 
 </style>

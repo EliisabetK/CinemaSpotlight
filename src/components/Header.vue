@@ -38,12 +38,12 @@
 .header a {
   color: #ECECEA;
   text-decoration: none;
-  font-size: 1em;
+  font-size: 1.2em;
 }
 .header a:hover {
   color: #E4C49E;
   text-decoration: none;
-  font-size: 1em;
+  font-size: 1.2em;
 }
 
 .separator {
