@@ -121,9 +121,9 @@ button:hover{
       background-color: rgb(186, 202, 210);
       border-radius: 10px;
       text-align: center;
-      margin: 8em auto;
+      margin: 6em auto;
       margin-bottom: 0em;
-      padding: 3em;
+      padding: 2em;
   }
 
   button{
@@ -159,8 +159,9 @@ button:hover{
   .errors{
     display: flex;
     flex-direction: column;
-    font-size: 1.1em;
-    padding-top: 1.5em;
+    font-size: 1em;
+    padding-top: 0em;
+    padding-bottom: 4em;
   }
   .form{
     padding-top: 2em;
@@ -176,7 +177,7 @@ button:hover{
   .text{
     display: flex;
     flex-direction: column;
-    font-size: 1.3em;
+    font-size: 1.2em;
   }
   .text > b{
     text-align: right;
@@ -188,7 +189,7 @@ button:hover{
     flex-direction: column;
   }
   p{
-    font-size: 1.3em;  
+    font-size: 1.2em;  
     color: #425546;
 }
  
