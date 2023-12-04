@@ -12,19 +12,10 @@
         <img :src="image_url" alt="Post Image" class="post-image" />
       </div>
       <p class="post-content">{{ post_text }}</p>
-      <div class="like-container">
-        <img
-          src="@/assets/thumb.png"
-          alt="Like Icon"
-          class="like-image"
-          @click="handleLikeClick"
-        />
-        <p class="like-count">Likes: {{ like_count }}</p>
-      </div>
     </div>
   </div>
 </template>
-
+ 
 <script>
 export default {
   name: 'Post',

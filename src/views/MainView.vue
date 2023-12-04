@@ -2,99 +2,111 @@
   <div>
     <div class="container">
       <aside class="left-column"></aside>
-
       <main>
         <div>
           <Post
-          v-for="post in postList"
-           :id="post.id"
-           :post_date= "post.date"
-           :post_text= "post.text"
-           :creator_name= "post.creator_name"
-           :image_url= "post.image_url"
-           :like_count= "post.likeCount"
-        />
+            v-for="post in postList"
+            :key="post.id"
+            :id="post.id"
+            :post_date="post.date"
+            :post_text="post.text"
+          />
         </div>
       </main>
       <aside class="right-column"></aside>
     </div>
-    <div class="resetLikesButton">
-      <button v-on:click="resetLikeCount">Reset likes</button>
-    </div>
+    <div class="button-container">
+      <button @click="logout">Logout</button>
+      <button @click="deleteAllPosts">Delete All</button>
+      <router-link to="/addpost">
+        <button class="add-post-button">Add Post</button>
+      </router-link>    </div>
   </div>
 </template>
 
 <script>
-import Post from '@/components/Post.vue'
+import Post from "@/components/Post.vue";
 
-console.log("mainView script started and Post imported")
 export default {
-    name: "MainView",
-    data: function() {
-      return {
-      }
-    }, 
-    computed: {
-      postList() {
-        return this.$store.state.postList;
-      }
+  name: "MainView",
+  data() {
+    return {
+      postText: "",
+    };
+  },
+  computed: {
+    postList() {
+      return this.$store.state.postList;
     },
-    components: {
-      Post,
+  },
+  components: {
+    Post,
+  },
+  methods: {
+    logout() {
+      fetch("http://localhost:3000/auth/logout", {
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then(() => {
+          this.$store.commit("logout");
+          this.$router.push("/login");
+        })
+        .catch((error) => {
+          console.log("Error during logout:", error);
+        });
     },
-    methods:{
-      resetLikeCount: function(){
-        this.$store.commit("resetLikeCount");
-      }
-    }
-}
-//console.log("postList found??", postList[0].text)
-// formats the date to be in the style of "Oct 4, 2023"
-
-
+    deleteAllPosts() {
+      // Add logic to delete all posts
+      console.log("Deleting all posts");
+    },
+  },
+};
 </script>
 
-<style>
-.resetLikesButton{
+<style scoped>
+.button-container {
   display: flex;
   justify-content: center;
 }
-.resetLikesButton > button:hover{
-  background-color: rgb(160, 197, 235);
-}
-.resetLikesButton > button:active{
-  padding: 0.53em;
-}
-.resetLikesButton > button{
-  display: flex;
+
+button {
+  border: 0;
   margin: 0.25em;
-  padding: 0.5em;
-  background-color: #85abc4;
-  border: none;
-  border-radius: 10%;
-  font-size: 1em;
+  padding: 10px 20px;
+  border-radius: 20px;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(160, 197, 235);
   color: rgb(24, 31, 31);
+  text-decoration: none;
+  font-size: medium;
 }
+
 .container {
-    display: flex;
-    /*min-height: calc(100vh - 4.5em);*/
-    max-height: calc(100vh - 6.5em);
-    column-gap: 3em;
-  }
-  
-  .left-column, .right-column {
-    flex: 1;
-    background-color: #7597ad;
-    border-radius: 10px;
-    margin-top: 5em;
-    position: sticky;
-    z-index: -1;
-  }
-  
-  main {
-    margin-top: 5em;
-    flex: 3; 
-    overflow-y: auto; 
-    max-height: calc(100vh - 10em); 
-  }
+  display: flex;
+  /*min-height: calc(100vh - 4.5em);*/
+  max-height: calc(100vh - 6.5em);
+  column-gap: 3em;
+}
+
+.left-column,
+.right-column {
+  flex: 1;
+  background-color: #7597ad;
+  border-radius: 10px;
+  margin-top: 5em;
+  position: sticky;
+  z-index: -1;
+}
+
+main {
+  margin-top: 5em;
+  flex: 3;
+  overflow-y: auto;
+  max-height: calc(100vh - 10em);
+}
+
 </style>

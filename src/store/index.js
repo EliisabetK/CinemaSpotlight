@@ -20,7 +20,7 @@ export default createStore({
   mutations: {
     incrementLikeCount(state, postIndex) {
       state.postList[postIndex].likeCount++;
-    },
+    }, 
     resetLikeCount: state => {
       state.postList.forEach(post => {
         post.likeCount = 0;

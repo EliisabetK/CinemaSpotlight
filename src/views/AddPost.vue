@@ -3,12 +3,12 @@
     <div class="container">
       <main>
         <div class="form">
-          <h3>SignUp</h3>
-          <label for="email">Email</label>
-          <input type="email" name="email" required v-model="email">
-          <label for="password">Password</label>
-          <input type="password" name="password" required v-model="password">
-          <button @click="SignUp" class="SignUp">SignUp</button>
+          <h3>Add Post</h3>
+          <label for="postText">Post Text</label>
+          <textarea name="postText" required v-model="postText"></textarea>
+          <div class="button-container">
+            <button @click="addPost" class="center">Add Post</button>
+          </div>
         </div>
       </main>
     </div>
@@ -17,21 +17,20 @@
 
 <script>
 export default {
-  name: "SignupView",
+  name: "AddPost",
+
   data: function () {
     return {
-      email: "",
-      password: "",
+      postText: "",
     };
   },
   methods: {
-    SignUp() {
+    addPost() {
       var data = {
-        email: this.email,
-        password: this.password,
+        text: this.postText,
       };
 
-      fetch("http://localhost:3000/auth/signup", {
+      fetch("http://localhost:3000/addpost", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,14 +41,12 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-
-          if (data.success) {
-            console.log("Signup successful");
-            this.$router.push("/");
-          } else {
-            console.log("Signup failed:", data.error);
-          }
+          // Redirect or perform other actions after adding the post
         })
+        .catch((e) => {
+          console.log(e);
+          console.log("error");
+        });
     },
   },
 };
@@ -81,11 +78,11 @@ main {
 
 h3 {
   text-align: center;
-  color: rgb(8, 48, 48);
+  color: rgb(8, 48, 48)
 }
 
 label {
-  color: rgb(8, 48, 48);
+  color: rgb(8, 49, 49);
   display: inline-block;
   margin: 25px 0 15px;
   font-size: 0.8em;
@@ -94,24 +91,38 @@ label {
   font-weight: bold;
 }
 
-input {
+textarea {
   display: block;
   padding: 10px 6px;
   width: 100%;
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid white;
-  color: rgb(13, 13, 52)19, 19, 113);
+  color: rgb(25, 25, 93);
+  resize: vertical;
 }
 
 button {
   background: rgb(8, 110, 110);
   border: 0;
   padding: 10px 20px;
-  margin-top: 20px;
+  margin: 20px 20px 20px 20px;
   color: white;
   border-radius: 20px;
   align-items: center;
   text-align: center;
+}
+
+.center {
+  margin: auto;
+  border: 0;
+  padding: 10px 20px;
+  margin-top: 20px;
+  width: 30%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
 }
 </style>

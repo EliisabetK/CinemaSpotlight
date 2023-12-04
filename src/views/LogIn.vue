@@ -3,12 +3,15 @@
     <div class="container">
       <main>
         <div class="form">
-          <h3>SignUp</h3>
+          <h3>LogIn</h3>
           <label for="email">Email</label>
           <input type="email" name="email" required v-model="email">
           <label for="password">Password</label>
           <input type="password" name="password" required v-model="password">
-          <button @click="SignUp" class="SignUp">SignUp</button>
+          <div class="button-container">
+            <button @click="LogIn" class="center">LogIn</button>
+            <button @click="$router.push('/signupview')" class="center">Signup</button>
+          </div>
         </div>
       </main>
     </div>
@@ -16,8 +19,10 @@
 </template>
 
 <script>
+import auth from "../auth";
+
 export default {
-  name: "SignupView",
+  name: "LogIn",
   data: function () {
     return {
       email: "",
@@ -25,32 +30,35 @@ export default {
     };
   },
   methods: {
-    SignUp() {
-      var data = {
-        email: this.email,
-        password: this.password,
-      };
+    LogIn() {
+    var data = {
+      email: this.email,
+      password: this.password,
+    };
 
-      fetch("http://localhost:3000/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(data),
+    fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.authenticated) {
+          // Login successful
+          this.$router.push("/mainview");
+        } else {
+          console.log("Login failed");
+        }
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-
-          if (data.success) {
-            console.log("Signup successful");
-            this.$router.push("/");
-          } else {
-            console.log("Signup failed:", data.error);
-          }
-        })
-    },
+      .catch((e) => {
+        console.log(e);
+        console.log("error");
+      });
+  },
   },
 };
 </script>
@@ -101,17 +109,30 @@ input {
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid white;
-  color: rgb(13, 13, 52)19, 19, 113);
+  color: rgb(17, 17, 54);
 }
 
 button {
   background: rgb(8, 110, 110);
   border: 0;
   padding: 10px 20px;
-  margin-top: 20px;
+  margin: 20px 20px 20px 20px;
   color: white;
   border-radius: 20px;
   align-items: center;
   text-align: center;
+}
+
+.center {
+  margin: auto;
+  border: 0;
+  padding: 10px 20px;
+  margin-top: 20px;
+  width: 30%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
 }
 </style>

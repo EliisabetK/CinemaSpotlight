@@ -2,9 +2,9 @@
     <header class="header">
       <p>Navigation</p>
       <div>
-        <router-link to="/">Home</router-link>
+        <router-link to="/mainview">Home</router-link>
         <span class="separator">|</span>
-        <router-link to="/signup">Sign up</router-link>
+        <router-link to="/contacts">Contacts</router-link>
       </div>
     </header>
   </template>
