@@ -40,7 +40,17 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // After adding the post, save it in the database
+          const savePostQuery = `
+            INSERT INTO "posts" (user_id, text) 
+            VALUES ('${data.user_id}', '${this.postText}') RETURNING *;`;
+
+          execute(savePostQuery).then((result) => {
+            console.log(result.rows[0]); // Log the saved post
+
+            // Optionally, you can update the store or perform other actions
+          });
+
           // Redirect or perform other actions after adding the post
         })
         .catch((e) => {

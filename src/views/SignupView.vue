@@ -1,3 +1,4 @@
+<!-- Sign up almost töötab, see authenticateb kasutaja ja tabel on õige aga see ei lähe kohe home viewsse -->
 <template>
   <div>
     <div class="container">
@@ -45,7 +46,7 @@ export default {
 
           if (data.success) {
             console.log("Signup successful");
-            this.$router.push("/");
+            this.$router.push("/mainview");
           } else {
             console.log("Signup failed:", data.error);
           }
@@ -58,7 +59,7 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  /*min-height: calc(100vh - 4.5em);*/
+  min-height: calc(100vh - 4.5em);
   max-height: calc(100vh - 6.5em);
   column-gap: 3em;
 }
@@ -101,7 +102,7 @@ input {
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid white;
-  color: rgb(13, 13, 52)19, 19, 113);
+  color: rgb(13, 13, 52);
 }
 
 button {

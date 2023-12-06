@@ -68,7 +68,6 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // This route requires authentication
     let authResult = await auth.authenticate();
     if (!authResult) {
       next("/login");
@@ -76,7 +75,6 @@ router.beforeEach(async (to, from, next) => {
       next();
     }
   } else {
-    // Allow public routes to be accessed without authentication
     next();
   }
 });

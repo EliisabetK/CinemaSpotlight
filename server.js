@@ -1,3 +1,5 @@
+//sisselogimine ei tööta aga väljalogimine töötab????????+
+
 const express = require('express');
 const pool = require('./database');
 const cors = require('cors');
@@ -86,34 +88,28 @@ app.post('/auth/signup', async(req, res) => {
     }
 });
 
-app.post('/auth/login', async(req, res) => {
+app.post('/auth/login', async (req, res) => {
     try {
         console.log("a login request has arrived");
         const { email, password } = req.body;
-        const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-        if (authUser.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
+        const authUser = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 
-        /* 
-        To authenticate users, you will need to compare the password they provide with the one in the database. 
-        bcrypt.compare() accepts the plain text password and the hash that you stored, along with a callback function. 
-        That callback supplies an object containing any errors that occurred, and the overall result from the comparison. 
-        If the password matches the hash, the result is true.
+        if (authUser.rows.length === 0) {
+            return res.status(401).json({ error: "User is not registered" });
+        }
 
-        bcrypt.compare method takes the first argument as a plain text and the second argument as a hash password. 
-        If both are equal then it returns true else returns false.
-        */
+        const validPassword = await bcrypt.compare(password, authUser.rows[0].password);
 
-        //Checking if the password is correct
-        const validPassword = await bcrypt.compare(password, authUser.rows[0].id.password);
-        //console.log("validPassword:" + validPassword);
-        if (!validPassword) return res.status(401).json({ error: "Incorrect password" });
+        if (!validPassword) {
+            return res.status(401).json({ error: "Incorrect password" });
+        }
 
-        const token = await generateJWT(authUser.rows[0].id.id);
+        const token = await generateJWT(authUser.rows[0].id);
         res
             .status(200)
             .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
-            .json({ user_id: authUser.rows[0].id.id })
-            .send;
+            .json({ user_id: authUser.rows[0].id })
+            .send();
     } catch (error) {
         res.status(401).json({ error: error.message });
     }

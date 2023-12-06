@@ -20,7 +20,8 @@
       <button @click="deleteAllPosts">Delete All</button>
       <router-link to="/addpost">
         <button class="add-post-button">Add Post</button>
-      </router-link>    </div>
+      </router-link>    
+    </div>
   </div>
 </template>
 
@@ -43,23 +44,43 @@ export default {
     Post,
   },
   methods: {
-    logout() {
-      fetch("http://localhost:3000/auth/logout", {
-        credentials: "include",
-      })
-        .then((response) => response.json())
-        .then(() => {
-          this.$store.commit("logout");
-          this.$router.push("/login");
-        })
-        .catch((error) => {
-          console.log("Error during logout:", error);
+    async fetchPosts() {
+      const fetchPostsQuery = `SELECT * FROM "posts";`;
+
+      try {
+        const response = await fetch("http://localhost:3000/fetchposts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ query: fetchPostsQuery }),
         });
+
+        const data = await response.json();
+        this.$store.commit("updatePostList", data.rows);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
     },
-    deleteAllPosts() {
-      // Add logic to delete all posts
-      console.log("Deleting all posts");
+    async logout() {
+      try {
+        await fetch("http://localhost:3000/auth/logout", {
+          credentials: "include",
+        });
+
+        this.$store.commit("logout");
+        this.$router.push("/login");
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
     },
+    async deleteAllPosts() {
+        
+    },
+  },
+  mounted() {
+    this.$store.dispatch('fetchPosts');
   },
 };
 </script>
@@ -79,7 +100,21 @@ button {
   text-align: center;
   display: flex;
   justify-content: center;
-  background-color: rgb(160, 197, 235);
+  background-color: rgb(165, 208, 158);
+  color: rgb(24, 31, 31);
+  text-decoration: none;
+  font-size: medium;
+}
+button:hover {
+  border: 0;
+  margin: 0.25em;
+  padding: 10px 20px;
+  border-radius: 20px;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(186, 228, 179);
   color: rgb(24, 31, 31);
   text-decoration: none;
   font-size: medium;
@@ -87,26 +122,29 @@ button {
 
 .container {
   display: flex;
-  /*min-height: calc(100vh - 4.5em);*/
-  max-height: calc(100vh - 6.5em);
+  max-height: calc(100vh - 7em);
   column-gap: 3em;
 }
 
-.left-column,
-.right-column {
-  flex: 1;
-  background-color: #7597ad;
-  border-radius: 10px;
-  margin-top: 5em;
-  position: sticky;
-  z-index: -1;
-}
+.left-column, .right-column {
+    flex: 1;
+    background-color: #7597ad;
+    border-radius: 10px;
+    margin-top: 5em;
+    position: sticky;
+    z-index: 1;
+    min-height: calc(100vh - 9.5em);
+    max-height: calc(100vh - 9.5em);
+  }
 
 main {
   margin-top: 5em;
   flex: 3;
   overflow-y: auto;
   max-height: calc(100vh - 10em);
+}
+.router-link{
+  text-decoration: none;
 }
 
 </style>

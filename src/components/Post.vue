@@ -1,15 +1,10 @@
+<!-- veel ei tööta aga baas olemas -->
+
 <template>
   <div id="postDiv" ref="dynamicContent">
     <div class="post">
       <div class="post-header">
-        <div class="profile-image-and-username">
-          <img :src="require('@/assets/icon.png')" alt="Profile Image" class="profile-image" />
-          <span class="username">{{ creator_name }}</span>
-        </div>
         <p class="post-date">{{ formatDate(post_date) }}</p>
-      </div>
-      <div v-if="image_url" class="image-container">
-        <img :src="image_url" alt="Post Image" class="post-image" />
       </div>
       <p class="post-content">{{ post_text }}</p>
     </div>
@@ -19,7 +14,7 @@
 <script>
 export default {
   name: 'Post',
-  props: ['id', 'post_date', 'post_text', 'creator_name', 'image_url', 'like_count'],
+  props: ['id', 'post_date', 'post_text'],
   data() {
     return {
     };
@@ -37,9 +32,6 @@ export default {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return postDate.toLocaleDateString(undefined, options);
       }
-    },
-    handleLikeClick: function() {
-      this.$store.commit("incrementLikeCount", this.id);
     },
   },
 };
@@ -60,34 +52,10 @@ export default {
   margin-bottom: 0.5em;
 }
 
-.profile-image {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  margin-bottom: 1em;
-  margin-right: 1em;
-}
-
-.username {
-  color: #293c2e;
-  margin-top: -2.7em;
-  margin-left: 3.3em;
-  margin-bottom: 0.5em; 
-  display: flex;
-  align-items: center;
-  font-size: 1.2em;
-}
-
 .post p{
   font-size: 1.5em;
   color: #1e2b21;
   margin-bottom: 0.5em; 
-}
-
-.profile-image-and-username + p {
-  margin-top: 0.5em;
-  color: #293c2e;
-  font-size: 1.2em;
 }
 
 .image-container {
@@ -100,29 +68,7 @@ export default {
   border-radius: 8px;
 }
 
-.like-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: -0.5em;
-  margin-bottom: -0.5em;
-}
 
-.like-image {
-  width: 40px;
-  height: 40px;
-  margin-right: 5px;
-}
-.like-image:active{
-  width: 40.5px;
-  height: 40.5px;
-  margin-right: 5px;
-}
-
-.like-count {
-  font-size: 1.5em;
-  color: #293c2e;
-}
 
 @media (max-width: 600px) {
   .profile-image {

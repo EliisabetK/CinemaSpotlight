@@ -1,40 +1,54 @@
-const Pool = require('pg').Pool;
+//see ei saa hakkama posts tabeli tegemisega, users tabel töötab
+
+const { Pool } = require('pg');
 
 const pool = new Pool({
-    user: "postgres",
-    password: "eliisabet", //add your password
-    database: "homework4",
-    host: "localhost",
-    port: "5432"
+  user: 'postgres',
+  password: 'eliisabet', // add your password
+  database: 'homework4',
+  host: 'localhost',
+  port: '5432'
 });
 
-const execute = async(query) => {
-    try {
-        await pool.connect(); // create a connection
-        await pool.query(query); // executes a query
-        return true;
-    } catch (error) {
-        console.error(error.stack);
-        return false;
-    }
+const execute = async (query) => {
+  try {
+    await pool.connect(); 
+    await pool.query(query);
+    return true;
+  } catch (error) {
+    console.error(error.stack);
+    return false;
+  }
 };
 
-/* 
-gen_random_uuid() A system function to generate a random Universally Unique IDentifier (UUID)
-An example of generated uuid:  32165102-4866-4d2d-b90c-7a2fddbb6bc8
-*/
+// Create "users" table
+const createUserTableQuery = `
+  CREATE TABLE IF NOT EXISTS "users" (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(200) NOT NULL UNIQUE,
+    password VARCHAR(200) NOT NULL 
+  );
+`;
 
-const createTblQuery = `
-    CREATE TABLE IF NOT EXISTS "users" (
-        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-        email VARCHAR(200) NOT NULL UNIQUE,
-        password VARCHAR(200) NOT NULL 
-    );`;
+execute(createUserTableQuery).then((result) => {
+  if (result) {
+    console.log('Table "users" is created');
+  }
+});
 
-execute(createTblQuery).then(result => {
-    if (result) {
-        console.log('Table "users" is created');
-    }
+const createPostsTableQuery = `
+  CREATE TABLE IF NOT EXISTS "posts" (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id uuid REFERENCES "users"(id),
+    post_text VARCHAR(1000) NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+`;
+
+execute(createPostsTableQuery).then((result) => {
+  if (result) {
+    console.log('Table "posts" is created');
+  }
 });
 
 module.exports = pool;

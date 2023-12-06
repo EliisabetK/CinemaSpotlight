@@ -1,3 +1,4 @@
+<!-- see ei tööta ma ei tea miks -->
 <template>
   <div>
     <div class="container">
@@ -17,7 +18,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import auth from "../auth";
 
@@ -30,7 +30,7 @@ export default {
     };
   },
   methods: {
-    LogIn() {
+  LogIn() {
     var data = {
       email: this.email,
       password: this.password,
@@ -47,11 +47,16 @@ export default {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        if (data.authenticated) {
-          // Login successful
-          this.$router.push("/mainview");
+
+        // Check if the response has expected properties
+        if (data.hasOwnProperty("authenticated")) {
+          if (data.authenticated) {
+            this.$router.push("/mainview");
+          } else {
+            console.log("Login failed");
+          }
         } else {
-          console.log("Login failed");
+          console.log("Unexpected response format");
         }
       })
       .catch((e) => {
@@ -59,7 +64,7 @@ export default {
         console.log("error");
       });
   },
-  },
+},
 };
 </script>
 
@@ -136,3 +141,4 @@ button {
   justify-content: center;
 }
 </style>
+
