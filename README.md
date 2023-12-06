@@ -15,5 +15,10 @@ npm run serve
 npm run build
 ```
 
+### To run server (change password in database.js file)
+```
+npm start
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

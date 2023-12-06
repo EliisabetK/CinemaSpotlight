@@ -100,8 +100,8 @@ button {
   text-align: center;
   display: flex;
   justify-content: center;
-  background-color: rgb(165, 208, 158);
-  color: rgb(24, 31, 31);
+  background: rgb(8, 110, 110);
+  color: rgb(233, 235, 235);
   text-decoration: none;
   font-size: medium;
 }
@@ -114,8 +114,8 @@ button:hover {
   text-align: center;
   display: flex;
   justify-content: center;
-  background-color: rgb(186, 228, 179);
-  color: rgb(24, 31, 31);
+  background: rgb(27, 154, 154);
+  color: rgb(241, 241, 241);
   text-decoration: none;
   font-size: medium;
 }
@@ -143,7 +143,7 @@ main {
   overflow-y: auto;
   max-height: calc(100vh - 10em);
 }
-.router-link{
+a{
   text-decoration: none;
 }
 

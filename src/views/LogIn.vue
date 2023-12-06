@@ -1,17 +1,18 @@
-<!-- see ei tööta ma ei tea miks -->
+<!-- peaaegu töötab aga ei lähe kohe main viewsse -->
 <template>
   <div>
     <div class="container">
       <main>
         <div class="form">
-          <h3>LogIn</h3>
+          <h3>Log In</h3>
           <label for="email">Email</label>
           <input type="email" name="email" required v-model="email">
           <label for="password">Password</label>
           <input type="password" name="password" required v-model="password">
           <div class="button-container">
-            <button @click="LogIn" class="center">LogIn</button>
-            <button @click="$router.push('/signupview')" class="center">Signup</button>
+            <button @click="LogIn" class="center">Log in</button>
+            <p> Or </p>
+            <button @click="$router.push('/signupview')" class="center">Sign up</button>
           </div>
         </div>
       </main>
@@ -128,6 +129,16 @@ button {
   text-align: center;
 }
 
+button:hover {
+  background: rgb(27, 154, 154);
+  border: 0;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: white;
+  border-radius: 20px;
+  align-items: center;
+  text-align: center;
+}
 .center {
   margin: auto;
   border: 0;
@@ -139,6 +150,9 @@ button {
 .button-container {
   display: flex;
   justify-content: center;
+}
+p{
+  color: rgb(8, 48, 48);
 }
 </style>
 

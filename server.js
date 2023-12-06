@@ -1,4 +1,4 @@
-//sisselogimine ei tööta aga väljalogimine töötab????????+
+//sisselogimine töötab teoorias aga see ei lähe main viewsse, ainutl siis läheb kui pärast sisse logimist nav barist minna
 
 const express = require('express');
 const pool = require('./database');

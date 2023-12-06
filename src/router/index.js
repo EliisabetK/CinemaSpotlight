@@ -33,11 +33,13 @@ const routes = [
     },
   },  
   {
+    //see tuleks ka protectida
     path: "/addpost",
     name: "AddPost",
     component: AddPost,
   },
   {
+    //see ka
     path: "/singlepost/:postId",
     name: "SinglePost",
     component: SinglePost,
