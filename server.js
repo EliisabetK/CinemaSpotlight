@@ -1,5 +1,3 @@
-//sisselogimine töötab teoorias aga see ei lähe main viewsse, ainutl siis läheb kui pärast sisse logimist nav barist minna
-
 const express = require('express');
 const pool = require('./database');
 const cors = require('cors');
@@ -33,7 +31,7 @@ app.listen(port, () => {
 
 // is used to check whether a user is authinticated
 app.get('/auth/authenticate', async(req, res) => {
-    console.log('authentication request has been arrived');
+    console.log('authentication request has arrived');
     const token = req.cookies.jwt; // assign the token named jwt to the token const
     //console.log("token " + token);
     let authenticated = false; // a user is not authenticated until proven the opposite
@@ -46,13 +44,13 @@ app.get('/auth/authenticate', async(req, res) => {
                     console.log('token is not verified');
                     res.send({ "authenticated": authenticated }); // authenticated = false
                 } else { // token exists and it is verified 
-                    console.log('author is authinticated');
+                    console.log('user is authenticated');
                     authenticated = true;
                     res.send({ "authenticated": authenticated }); // authenticated = true
                 }
             })
         } else { //applies when the token does not exist
-            console.log('author is not authinticated');
+            console.log('user is not authinticated');
             res.send({ "authenticated": authenticated }); // authenticated = false
         }
     } catch (err) {
@@ -88,28 +86,34 @@ app.post('/auth/signup', async(req, res) => {
     }
 });
 
-app.post('/auth/login', async (req, res) => {
+app.post('/auth/login', async(req, res) => {
     try {
         console.log("a login request has arrived");
         const { email, password } = req.body;
-        const authUser = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (user.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
 
-        if (authUser.rows.length === 0) {
-            return res.status(401).json({ error: "User is not registered" });
-        }
+        /* 
+        To authenticate users, you will need to compare the password they provide with the one in the database. 
+        bcrypt.compare() accepts the plain text password and the hash that you stored, along with a callback function. 
+        That callback supplies an object containing any errors that occurred, and the overall result from the comparison. 
+        If the password matches the hash, the result is true.
 
-        const validPassword = await bcrypt.compare(password, authUser.rows[0].password);
+        bcrypt.compare method takes the first argument as a plain text and the second argument as a hash password. 
+        If both are equal then it returns true else returns false.
+        */
 
-        if (!validPassword) {
-            return res.status(401).json({ error: "Incorrect password" });
-        }
+        //Checking if the password is correct
+        const validPassword = await bcrypt.compare(password, user.rows[0].password);
+        console.log("validPassword:" + validPassword);
+        if (!validPassword) return res.status(401).json({ error: "Incorrect password" });
 
-        const token = await generateJWT(authUser.rows[0].id);
+        const token = await generateJWT(user.rows[0].id);
         res
-            .status(200)
+            .status(201)
             .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
-            .json({ user_id: authUser.rows[0].id })
-            .send();
+            .json({ user_id: user.rows[0].id })
+            .send;
     } catch (error) {
         res.status(401).json({ error: error.message });
     }

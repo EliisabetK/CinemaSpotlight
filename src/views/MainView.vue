@@ -68,15 +68,14 @@ export default {
         await fetch("http://localhost:3000/auth/logout", {
           credentials: "include",
         });
-
-        this.$store.commit("logout");
+        this.$store.commit('logout');
         this.$router.push("/login");
       } catch (error) {
         console.error("Error during logout:", error);
       }
     },
     async deleteAllPosts() {
-        
+
     },
   },
   mounted() {

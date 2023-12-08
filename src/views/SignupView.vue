@@ -1,4 +1,4 @@
-<!-- Sign up almost töötab, see authenticateb kasutaja ja tabel on õige aga see ei lähe kohe home viewsse -->
+<!--võiks lisada selle et öeldakse kui kasutaja on juba registreeritud-->
 <template>
   <div>
     <div class="container">
@@ -44,13 +44,16 @@ export default {
         .then((data) => {
           console.log(data);
 
-          if (data.success) {
+          if (data.authenticated) {
             console.log("Signup successful");
             this.$router.push("/mainview");
           } else {
             console.log("Signup failed:", data.error);
           }
         })
+        .catch((error) => {
+          console.error("Error during signup:", error);
+        });
     },
   },
 };

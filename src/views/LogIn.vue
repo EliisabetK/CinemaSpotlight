@@ -1,4 +1,4 @@
-<!-- peaaegu töötab aga ei lähe kohe main viewsse -->
+<!-- võiks teha siia selle et see ütleb vastavalt et vale parool või kasutajat pole kui sisselogimine failib -->
 <template>
   <div>
     <div class="container">
@@ -19,53 +19,53 @@
     </div>
   </div>
 </template>
+
 <script>
 import auth from "../auth";
 
 export default {
   name: "LogIn",
-  data: function () {
+  data() {
     return {
       email: "",
       password: "",
     };
   },
   methods: {
-  LogIn() {
-    var data = {
-      email: this.email,
-      password: this.password,
-    };
+    async LogIn() {
+      try {
+        const data = {
+          email: this.email,
+          password: this.password,
+        };
 
-    fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+        const response = await fetch("http://localhost:3000/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(data),
+        });
 
-        // Check if the response has expected properties
-        if (data.hasOwnProperty("authenticated")) {
-          if (data.authenticated) {
-            this.$router.push("/mainview");
-          } else {
-            console.log("Login failed");
-          }
-        } else {
-          console.log("Unexpected response format");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      })
-      .catch((e) => {
-        console.log(e);
-        console.log("error");
-      });
+
+        const responseData = await response.json();
+
+        if (responseData.user_id) {
+          console.log("Login successful");
+          await auth.authenticate();
+          this.$router.push("/mainview");
+        } else {
+          console.log("Login failed:", responseData.error);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    },
   },
-},
 };
 </script>
 

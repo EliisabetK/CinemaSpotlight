@@ -3,10 +3,14 @@ import { createStore } from 'vuex';
 export default createStore({
   state: {
     postList: [],
+    isAuthenticated: false, // Add isAuthenticated state
   },
   mutations: {
     setPostList(state, posts) {
       state.postList = posts;
+    },
+    logout(state) {
+      state.isAuthenticated = false; // Set isAuthenticated to false when logging out
     },
   },
   actions: {

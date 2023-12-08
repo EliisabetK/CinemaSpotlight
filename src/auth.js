@@ -15,11 +15,10 @@ export default {
     } catch (error) {
       console.log(error);
       console.log("Error during authentication");
-      return false; // Return false in case of an error
+      return false;
     }
   },
 
-  // Function to handle user login
   login: async function (credentials) {
     try {
       const response = await fetch("http://localhost:3000/auth/login", {
