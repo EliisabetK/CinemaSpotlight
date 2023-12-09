@@ -1,5 +1,4 @@
 //see ei saa hakkama posts tabeli tegemisega, users tabel töötab
-
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -21,7 +20,6 @@ const execute = async (query) => {
   }
 };
 
-// Create "users" table
 const createUserTableQuery = `
   CREATE TABLE IF NOT EXISTS "users" (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),

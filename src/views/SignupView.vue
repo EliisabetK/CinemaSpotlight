@@ -1,4 +1,3 @@
-<!--võiks lisada selle et öeldakse kui kasutaja on juba registreeritud-->
 <template>
   <div>
     <div class="container">
@@ -10,6 +9,7 @@
           <label for="password">Password</label>
           <input type="password" name="password" required v-model="password">
           <button @click="SignUp" class="SignUp">Sign up</button>
+          <p v-if="duplicateEmailError" class="error-text">Email is already registered. Log in.</p>
         </div>
       </main>
     </div>
@@ -23,6 +23,7 @@ export default {
     return {
       email: "",
       password: "",
+      duplicateEmailError: false, // Initialize the flag here
     };
   },
   methods: {
@@ -40,7 +41,12 @@ export default {
         credentials: "include",
         body: JSON.stringify(data),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then((data) => {
           console.log(data);
 
@@ -49,21 +55,36 @@ export default {
             this.$router.push("/mainview");
           } else {
             console.log("Signup failed:", data.error);
-          }
-        })
-        .catch((error) => {
-          console.error("Error during signup:", error);
-        });
-    },
+
+            if (data.error && data.error.includes("duplicate key value violates unique constraint \"users_email_key\"")) {
+              this.duplicateEmailError = true;
+            } else {
+              this.duplicateEmailError = false;
+            }
+      }
+    })
+    .catch((error) => {
+      console.error("Error during signup:", error);
+      this.duplicateEmailError = true;
+    });
+},
+
   },
 };
 </script>
 
+
 <style scoped>
+
+.error-text {
+  color: red;
+  font-size: 0.8em;
+  text-align: center;
+}
+
 .container {
   display: flex;
-  min-height: calc(100vh - 4.5em);
-  max-height: calc(100vh - 6.5em);
+  max-height: calc(100vh - 4.5em);
   column-gap: 3em;
 }
 
@@ -81,6 +102,7 @@ main {
   text-align: left;
   padding: 40px;
   border-radius: 10px;
+  height: 19em;
 }
 
 h3 {
