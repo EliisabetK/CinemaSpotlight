@@ -9,7 +9,7 @@
             :key="post.id"
             :id="post.id"
             :post_date="post.date"
-            :post_text="post.text"
+            :post_text="post.post_text"
           />
         </div>
       </main>
@@ -32,7 +32,7 @@ export default {
   name: "MainView",
   data() {
     return {
-      postText: "",
+      //postText: "",
     };
   },
   computed: {
@@ -44,25 +44,6 @@ export default {
     Post,
   },
   methods: {
-    async fetchPosts() {
-      const fetchPostsQuery = `SELECT * FROM "posts";`;
-
-      try {
-        const response = await fetch("http://localhost:3000/fetchposts", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ query: fetchPostsQuery }),
-        });
-
-        const data = await response.json();
-        this.$store.commit("updatePostList", data.rows);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    },
     async logout() {
       try {
         await fetch("http://localhost:3000/auth/logout", {
@@ -75,11 +56,14 @@ export default {
       }
     },
     async deleteAllPosts() {
-
+      console.log("Delete all button pressed")
+      this.$store.dispatch('deletePosts')
+      this.$router.go()
     },
   },
   mounted() {
     this.$store.dispatch('fetchPosts');
+    console.log("mounted")
   },
 };
 </script>

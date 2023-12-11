@@ -15,13 +15,18 @@ export default createStore({
   },
   actions: {
     async fetchPosts({ commit }) {
-      try {
-        const response = await fetch('http://localhost:3000/posts');
-        const data = await response.json();
-        commit('setPostList', data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
+      fetch(`http://localhost:3000/api/posts`)
+      .then((response) => response.json())
+      .then((data) => commit('setPostList', data))
+      .catch((e) => console.log(e.message));
+    },
+    async deletePosts() {
+      fetch(`http://localhost:3000/api/posts`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((response) => response.json())
+      .catch((e) => console.log(e));
     },
   },
 });

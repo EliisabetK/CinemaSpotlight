@@ -124,3 +124,40 @@ app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 });
+
+app.post('/api/posts', async(req, res) => {
+    try {
+        console.log("a post request has arrived");
+        const post = req.body;
+        const newpost = await pool.query(
+            `INSERT INTO "posts" (user_id, post_text) VALUES ($1, $2) RETURNING *`, [post.user_id, post.post_text]
+        );
+        res.json(newpost);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get('/api/posts', async(req, res) => {
+    try {
+        console.log("get posts request has arrived");
+        const posts = await pool.query(
+            "SELECT * FROM posts"
+        );
+        res.json(posts.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.delete('/api/posts', async(req, res) => {
+    try {
+        console.log("delete all posts request has arrived");
+        const deletepost = await pool.query(
+            "DELETE FROM posts RETURNING*"
+        );
+        res.json(deletepost);
+    } catch (err) {
+        console.error(err.message);
+    }
+});

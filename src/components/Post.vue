@@ -4,7 +4,7 @@
   <div id="postDiv" ref="dynamicContent">
     <div class="post">
       <div class="post-header">
-        <p class="post-date">{{ formatDate(post_date) }}</p>
+        <p class="post-date">{{ getDate(post_date) }}</p>
       </div>
       <p class="post-content">{{ post_text }}</p>
     </div>
@@ -33,6 +33,18 @@ export default {
         return postDate.toLocaleDateString(undefined, options);
       }
     },
+    getDate(dateString) {
+      const postDate = new Date(dateString);
+      const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+      const month = months[postDate.getMonth()];
+      const date = postDate.getDate();
+      const year = postDate.getFullYear();
+      const dateStringNew = `${month} ${date}, ${year}`
+      return dateStringNew;
+    }
   },
 };
 </script>

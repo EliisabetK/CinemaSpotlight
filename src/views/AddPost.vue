@@ -27,10 +27,9 @@ export default {
   methods: {
     addPost() {
       var data = {
-        text: this.postText,
+        post_text: this.postText,
       };
-
-      fetch("http://localhost:3000/addpost", {
+      fetch("http://localhost:3000/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,25 +37,15 @@ export default {
         credentials: "include",
         body: JSON.stringify(data),
       })
-        .then((response) => response.json())
-        .then((data) => {
-          // After adding the post, save it in the database
-          const savePostQuery = `
-            INSERT INTO "posts" (user_id, text) 
-            VALUES ('${data.user_id}', '${this.postText}') RETURNING *;`;
-
-          execute(savePostQuery).then((result) => {
-            console.log(result.rows[0]); // Log the saved post
-
-            // Optionally, you can update the store or perform other actions
-          });
-
-          // Redirect or perform other actions after adding the post
-        })
-        .catch((e) => {
+      .then((response) => {
+        console.log(response.data);
+        response.json();
+        this.$router.push("/mainview");
+      })
+      .catch((e) => {
           console.log(e);
           console.log("error");
-        });
+      });
     },
   },
 };
