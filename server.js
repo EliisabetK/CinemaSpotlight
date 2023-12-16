@@ -138,6 +138,19 @@ app.post('/api/posts', async(req, res) => {
     }
 });
 
+app.put('/api/posts/:id', async(req, res) => {
+    try {
+        console.log("a put request has arrived");
+        const { post_text } = req.body;
+        const postId = req.params.id;
+        const updatedpost = await pool.query(
+            `UPDATE posts SET post_text =  $1 WHERE id = $2 RETURNING *`, [post_text, postId])
+        res.json(updatedpost.rows[0])
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 app.get('/api/posts', async(req, res) => {
     try {
         console.log("get posts request has arrived");
@@ -150,6 +163,18 @@ app.get('/api/posts', async(req, res) => {
     }
 });
 
+app.get('/api/posts/:id', async(req, res) => {
+    try{
+        const postId = req.params.id;
+        const post = await pool.query(
+            "SELECT * FROM posts WHERE id = $1", [postId]
+        );
+        res.json(post.rows);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
+
 app.delete('/api/posts', async(req, res) => {
     try {
         console.log("delete all posts request has arrived");
@@ -161,3 +186,24 @@ app.delete('/api/posts', async(req, res) => {
         console.error(err.message);
     }
 });
+
+app.delete('/api/posts/:id', async (req, res) => {
+    try {
+      console.log("A DELETE request has arrived");
+      const postId = req.params.id;
+  
+      const deletedPost = await pool.query(
+        'DELETE FROM posts WHERE id = $1 RETURNING *',
+        [postId]
+      );
+  
+      if (deletedPost.rows.length === 0) {
+        return res.status(404).json({ error: 'Post not found' });
+      }
+  
+      res.json({ message: 'Post deleted successfully' });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });

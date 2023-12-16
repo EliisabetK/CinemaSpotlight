@@ -43,14 +43,7 @@ const routes = [
     path: "/singlepost/:postId",
     name: "SinglePost",
     component: SinglePost,
-    beforeEnter: async (to, from, next) => {
-      let authResult = await auth.authenticated();
-      if (!authResult) {
-        next('/login');
-      } else {
-        next();
-      }
-    },
+    props: true,
   },
   {
     path: "/contacts",

@@ -1,14 +1,16 @@
 <!-- veel ei tööta aga baas olemas -->
 
 <template>
-  <div id="postDiv" ref="dynamicContent">
-    <div class="post">
-      <div class="post-header">
-        <p class="post-date">{{ getDate(post_date) }}</p>
+  <router-link :to="'/singlepost/' + id">
+    <div id="postDiv" ref="dynamicContent">
+      <div class="post">
+        <div class="post-header">
+          <p class="post-date">{{ getDate(post_date) }}</p>
+        </div>
+        <p class="post-content">{{ post_text }}</p>
       </div>
-      <p class="post-content">{{ post_text }}</p>
     </div>
-  </div>
+  </router-link>
 </template>
  
 <script>
