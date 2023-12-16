@@ -37,7 +37,7 @@ export default {
     } catch (error) {
       console.log(error);
       console.log("Error during login");
-      return false; // Return false in case of an error
+      return false;
     }
   },
 
@@ -60,7 +60,7 @@ export default {
     } catch (error) {
       console.log(error);
       console.log("Error during signup");
-      return false; // Return false in case of an error
+      return false;
     }
   },
 };

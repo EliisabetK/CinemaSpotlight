@@ -31,19 +31,34 @@ const routes = [
         next();
       }
     },
-  },  
+  },
   {
-    //see tuleks ka protectida
     path: "/addpost",
     name: "AddPost",
     component: AddPost,
+    beforeEnter: async (to, from, next) => {
+      let authResult = await auth.authenticate();
+      if (!authResult) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
   {
-    //see ka
     path: "/singlepost/:postId",
     name: "SinglePost",
     component: SinglePost,
-    props: true,
+    bbeforeEnter: async (to, from, next) => {
+      console.log('Before entering SinglePost route');
+      let authResult = await auth.authenticate();
+      console.log('Authentication result:', authResult);
+      if (!authResult) {
+        next('/login');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/contacts",

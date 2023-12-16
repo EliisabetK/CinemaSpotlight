@@ -23,7 +23,6 @@ export default {
   data: function () {
     return {
       postText: "",
-      postsList: []
     };
   },
   mounted() {
@@ -31,17 +30,6 @@ export default {
   },
 
   methods: {
-    fetchPostsList() {
-      fetch('http://localhost:3000/api/posts')
-        .then(response => response.json())
-        .then(data => {
-          this.postsList = data;
-        })
-        .catch(error => {
-          console.error('Error fetching posts list:', error);
-        });
-    },
-
     fetchPostText() {
       const postId = this.$route.params.postId
       
@@ -180,5 +168,8 @@ button {
 .button-container {
   display: flex;
   justify-content: center;
+}
+button:hover {
+  background: rgb(27, 154, 154);
 }
 </style>

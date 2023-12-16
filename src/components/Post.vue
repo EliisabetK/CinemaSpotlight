@@ -1,5 +1,3 @@
-<!-- veel ei tööta aga baas olemas -->
-
 <template>
   <router-link :to="'/singlepost/' + id">
     <div id="postDiv" ref="dynamicContent">
@@ -22,32 +20,29 @@ export default {
     };
   },
   methods: {
-    formatDate(dateString) {
+    getDate(dateString) {
       const postDate = new Date(dateString);
       const currentDate = new Date();
       const timeDifference = currentDate - postDate;
 
-      if (timeDifference < 24 * 60 * 60 * 1000) {
+      if (timeDifference < 60 * 60 * 1000) {
+        const minutesAgo = Math.floor(timeDifference / (60 * 1000));
+        return `${minutesAgo} minutes ago`;
+      } else if (timeDifference < 24 * 60 * 60 * 1000) {
         const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
         return `${hoursAgo} hours ago`;
       } else {
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return postDate.toLocaleDateString(undefined, options);
+        const months = [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        const month = months[postDate.getMonth()];
+        const date = postDate.getDate();
+        const year = postDate.getFullYear();
+        return `${month} ${date}, ${year}`;
       }
-    },
-    getDate(dateString) {
-      const postDate = new Date(dateString);
-      const months = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-      ];
-      const month = months[postDate.getMonth()];
-      const date = postDate.getDate();
-      const year = postDate.getFullYear();
-      const dateStringNew = `${month} ${date}, ${year}`
-      return dateStringNew;
     }
-  },
+  }
 };
 </script>
 
@@ -57,47 +52,28 @@ export default {
   border-radius: 10px;
   padding: 1em;
   margin-bottom: 1em;
+  word-wrap: break-word;
 }
-
+.post p {
+  font-size: 1.5em;
+  color: #1e2b21;
+  margin-bottom: 0.5em;
+}
 .post-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
   margin-bottom: 0.5em;
 }
 
-.post p{
-  font-size: 1.5em;
-  color: #1e2b21;
-  margin-bottom: 0.5em; 
+.post-header p {
+  margin-bottom: 0.5em;
+  font-size: 1.3em;
+  color: #28352b;
 }
-
-.image-container {
-  margin-bottom: 1em; 
-}
-
-.post-image {
-  width: 50%;
-  height: auto;
-  border-radius: 8px;
-}
-
-
 
 @media (max-width: 600px) {
-  .profile-image {
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
-  }
-
   .post p {
     font-size: 0.9em;
-    margin-bottom: 0.25em;
-  }
-
-  .username {
-    font-size: 1em;
     margin-bottom: 0.25em;
   }
 }

@@ -1,10 +1,17 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container2">
       <main>
         <div class="contacts">
-          <h1 class="contacts-title">Contacts</h1>
-          <p>Tere siin on kontaktid</p>
+          <h1 class="contacts-title">Contact us: </h1>
+          <div class="contacts-content">
+            <div class="contact-item">
+              <strong>Email:</strong> Taavi.Taavet@hot.ee
+            </div>
+            <div class="contact-item">
+              <strong>Phone:</strong> +372 5432 1098
+            </div>
+          </div>
         </div>
       </main>
     </div>
@@ -18,39 +25,38 @@ export default {
 </script>
 
 <style>
-.container {
+.container2 {
   display: flex;
-  /*min-height: calc(100vh - 4.5em);*/
-  max-height: calc(100vh - 6.5em);
-  column-gap: 3em;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.left-column,
-.right-column {
+.container2 main {
   flex: 1;
-  background-color: #7597ad;
-  border-radius: 10px;
-  margin-top: 5em;
-  position: sticky;
-  z-index: -1;
-}
-
-main {
-  margin-top: 5em;
-  flex: 3;
-  overflow-y: auto;
-  max-height: calc(100vh - 10em);
+  text-align: center;
 }
 
 .contacts {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .contacts-title {
-  margin-top: -100px;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.contacts-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-item {
+  margin-top: 15px;
 }
 
 p {
-  font-size: 20px;
+  font-size: 1.2em;
+  color: #333;
 }
 </style>

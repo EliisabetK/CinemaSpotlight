@@ -93,16 +93,6 @@ app.post('/auth/login', async(req, res) => {
         const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
         if (user.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
 
-        /* 
-        To authenticate users, you will need to compare the password they provide with the one in the database. 
-        bcrypt.compare() accepts the plain text password and the hash that you stored, along with a callback function. 
-        That callback supplies an object containing any errors that occurred, and the overall result from the comparison. 
-        If the password matches the hash, the result is true.
-
-        bcrypt.compare method takes the first argument as a plain text and the second argument as a hash password. 
-        If both are equal then it returns true else returns false.
-        */
-
         //Checking if the password is correct
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
         console.log("validPassword:" + validPassword);
@@ -125,18 +115,26 @@ app.get('/auth/logout', (req, res) => {
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 });
 
-app.post('/api/posts', async(req, res) => {
+app.post('/api/posts', async (req, res) => {
     try {
         console.log("a post request has arrived");
+        const token = req.cookies.jwt;
+        if (!token) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+        const decodedToken = await jwt.verify(token, secret);
+        const user_id = decodedToken.id;
         const post = req.body;
         const newpost = await pool.query(
-            `INSERT INTO "posts" (user_id, post_text) VALUES ($1, $2) RETURNING *`, [post.user_id, post.post_text]
+            `INSERT INTO "posts" (user_id, post_text) VALUES ($1, $2) RETURNING *`, [user_id, post.post_text]
         );
         res.json(newpost);
     } catch (err) {
         console.error(err.message);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 app.put('/api/posts/:id', async(req, res) => {
     try {
@@ -155,7 +153,7 @@ app.get('/api/posts', async(req, res) => {
     try {
         console.log("get posts request has arrived");
         const posts = await pool.query(
-            "SELECT * FROM posts"
+            "SELECT * FROM posts ORDER BY date DESC"
         );
         res.json(posts.rows);
     } catch (err) {

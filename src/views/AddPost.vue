@@ -27,6 +27,7 @@ export default {
   methods: {
     addPost() {
       var data = {
+        user_id: this.user_id,
         post_text: this.postText,
       };
       fetch("http://localhost:3000/api/posts", {
@@ -110,6 +111,9 @@ button {
   border-radius: 20px;
   align-items: center;
   text-align: center;
+}
+button:hover {
+  background: rgb(27, 154, 154);
 }
 
 .center {

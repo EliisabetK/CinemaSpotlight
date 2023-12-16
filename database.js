@@ -1,4 +1,3 @@
-//see ei saa hakkama posts tabeli tegemisega, users tabel töötab
 const { Pool } = require('pg');
 
 const pool = new Pool({
