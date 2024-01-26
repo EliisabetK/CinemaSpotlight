@@ -10,7 +10,7 @@ const pool = new Pool({
 
 const execute = async (query) => {
   try {
-    await pool.connect(); 
+    await pool.connect();
     await pool.query(query);
     return true;
   } catch (error) {
@@ -19,33 +19,43 @@ const execute = async (query) => {
   }
 };
 
-const createUserTableQuery = `
-  CREATE TABLE IF NOT EXISTS "users" (
+const createMovieTableQuery = `
+  CREATE TABLE IF NOT EXISTS "movies" (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(200) NOT NULL UNIQUE,
-    password VARCHAR(200) NOT NULL 
+    name VARCHAR(200) NOT NULL UNIQUE,
+    director VARCHAR(200) NOT NULL,
+    length INTEGER NOT NULL,
+    releasedate timestamp NOT NULL,
+    imdb DECIMAL(3, 1),
+    letterboxd DECIMAL(3, 1),
+    rottentomatoes DECIMAL(3),
+    summary TEXT,
+    photo VARCHAR(1000)
   );
 `;
 
-execute(createUserTableQuery).then((result) => {
-  if (result) {
-    console.log('Table "users" is created');
-  }
-});
-
-const createPostsTableQuery = `
-  CREATE TABLE IF NOT EXISTS "posts" (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id uuid REFERENCES "users"(id),
-    post_text VARCHAR(1000) NOT NULL,
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
+// Insert sample movie data
+const insertMovieDataQuery = `
+  INSERT INTO "movies" (name, director, length, releasedate, imdb, letterboxd, rottentomatoes, summary, photo)
+  VALUES
+    ('Poor Things', 'Yorgos Lanthymos', 141, '2022-01-01', 7.5, 3.5, 80, 'A great movie with an interesting plot.', 'https://mcswebsites.blob.core.windows.net/1011/Event_7104/portrait_micro/PoorThings_1350x2000.jpg'),
+    ('Movie2', 'Director2', 110, '2022-02-15', 8.2, 4.0, 92, 'An exciting film with superb performances.', 'https://mcswebsites.blob.core.windows.net/1011/Event_7104/portrait_micro/PoorThings_1350x2000.jpg'),
+    ('Movie3', 'Director3', 95, '2022-03-30', 6.5, 3.0, 70, 'A classic that stands the test of time.', 'https://mcswebsites.blob.core.windows.net/1011/Event_7104/portrait_micro/PoorThings_1350x2000.jpg'),
+    ('Movie4', 'Director4', 130, '2022-04-20', 9.0, 4.5, 95, 'An epic masterpiece that everyone should watch.', 'https://mcswebsites.blob.core.windows.net/1011/Event_7104/portrait_micro/PoorThings_1350x2000.jpg');
 `;
 
-execute(createPostsTableQuery).then((result) => {
-  if (result) {
-    console.log('Table "posts" is created');
-  }
-});
+execute(createMovieTableQuery)
+  .then((result) => {
+    if (result) {
+      console.log('Table "movies" is created');
+      // After creating the table, insert sample data
+      return execute(insertMovieDataQuery);
+    }
+  })
+  .then((insertResult) => {
+    if (insertResult) {
+      console.log('Sample data inserted into the "movies" table');
+    }
+  });
 
 module.exports = pool;

@@ -1,0 +1,92 @@
+<template>
+  <router-link :to="'/amovie/' + id">
+    <div class="movie" ref="dynamicContent">
+      <img :src="photo" alt="Movie Cover" class="movie-cover">
+      <div class="movie-info">
+        <h2>{{ name }}</h2>
+        <div class="rating">
+          <span v-for="star in computedStars" :key="star" class="star">{{ star }}</span>
+        </div>
+        <p>
+          {{ rottentomatoes > 50 ? '🍅' : '🤢' }} {{ rottentomatoes }}%
+        </p>
+        <p>In cinemas</p>
+      </div>
+    </div>
+  </router-link>
+</template>
+
+<script>
+export default {
+  name: 'Movie',
+  props: ['id', 'photo', 'name', 'imdb', 'letterboxd', 'rottentomatoes', 'releasedate'],
+  methods: {
+    // ... any other methods you might need
+  },
+  computed: {
+    computedStars() {
+      let stars = '';
+      let fullStars = Math.floor(this.letterboxd);
+      let halfStar = this.letterboxd - fullStars;
+      let emptyStars = 5 - fullStars - 1;
+      for (let i = 0; i < fullStars; i++) {
+        stars += '\u2605'; // Unicode for a solid star
+      }
+      if (halfStar >= 0.5) stars += '\u2605';
+      else if (halfStar < 0.5) stars += '\u2606';
+
+      for (let i = 0; i < emptyStars; i++) {
+        stars += '\u2606'; // Unicode for an empty star
+      }
+      return stars;
+    }
+
+  },
+};
+</script>
+
+<style scoped>
+.movie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--primary-color);
+  margin-bottom: 1em;
+  word-wrap: break-word;
+  width: 15em;
+}
+
+.movie-cover {
+  width: 15em;
+  height: 15em;
+  margin-bottom: -0.1em;
+}
+
+.movie-info {
+  text-align: center;
+  font-size: 1em;
+  color: var(--text-light);
+  margin-bottom: 0em;
+}
+
+.movie-info h2 {
+  font-size: 1.2em;
+  color: var(--text-light);
+  margin-bottom: -0.1em;
+}
+
+.rating {
+  display: inline-block;
+  margin-bottom: -1em;
+}
+@media (max-width: 600px) {
+  .movie-info h3 {
+    font-size: 1.2em;
+    margin-bottom: 0.25em;
+  }
+}
+.star {
+  color: #e6d054;
+  font-size: 30px;
+}
+</style>

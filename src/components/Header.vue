@@ -1,10 +1,9 @@
 <template>
     <header class="header">
-      <p>Navigation</p>
       <div>
-        <router-link to="/mainview">Home</router-link>
+        <router-link to="/Home">Home</router-link>
         <span class="separator">|</span>
-        <router-link to="/contacts">Contacts</router-link>
+        <router-link to="/Info">Info</router-link>
       </div>
     </header>
   </template>
@@ -18,14 +17,17 @@
   <style scoped>
   .header {
   position: fixed;
-  background-position-x: center;
-  width: 99.6%;
-  padding: .5em 0em .5em 0em;
-  background-color: #7597ad;
-  border-radius: 10px;
+  width: 100%;
+  padding: 0.7em;
+  background-color: var(--primary-color);
   display: flex;
   flex-direction: column; 
-  align-items: center; 
+  align-items: left; 
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  margin-left: -1em;
+  padding-left: 3em;
 }
 
 .header p {
@@ -36,12 +38,13 @@
 }
 
 .header a {
-  color: #ECECEA;
+  color: var(--text-light);
   text-decoration: none;
   font-size: 1.2em;
+  padding: 1em;
 }
 .header a:hover {
-  color: #E4C49E;
+  color: #e6d054;
   text-decoration: none;
   font-size: 1.2em;
 }

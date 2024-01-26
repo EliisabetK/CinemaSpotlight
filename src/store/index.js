@@ -2,31 +2,19 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    postList: [],
-    isAuthenticated: false, // Add isAuthenticated state
+    movieList: [],
   },
   mutations: {
-    setPostList(state, posts) {
-      state.postList = posts;
-    },
-    logout(state) {
-      state.isAuthenticated = false; // Set isAuthenticated to false when logging out
+    setMovies(state, movies) {
+      state.movieList = movies;
     },
   },
   actions: {
-    async fetchPosts({ commit }) {
-      fetch(`http://localhost:3000/api/posts`)
+    async fetchMovies({ commit }) {
+      fetch(`http://localhost:3000/api/movies`)
       .then((response) => response.json())
-      .then((data) => commit('setPostList', data))
+      .then((data) => commit('setMovies', data))
       .catch((e) => console.log(e.message));
-    },
-    async deletePosts() {
-      fetch(`http://localhost:3000/api/posts`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((response) => response.json())
-      .catch((e) => console.log(e));
     },
   },
 });
