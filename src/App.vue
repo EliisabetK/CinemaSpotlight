@@ -2,19 +2,20 @@
   <div id="app">
     <Header> </Header>
     <router-view/>
-    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue';
 import Movie from '@/components/Movie.vue';
+import Movie2 from '@/components/Movie2.vue';
 
 export default {
   name: 'App',
   components: {
     Header,
-    Movie
+    Movie,
+    Movie2
   },
 };
 </script>
@@ -34,16 +35,31 @@ export default {
   /* Background Colors */
   --accent-light: #E4D9FF;
   --accent-dark: #8687B4;
+  --accent-yellow: #e6d054;
   
   /* Text Colors */
   --text-light: #FAFAFF;
 }
 
 body {
-  font-family: monospace, sans-serif;
-  margin: 0;
+  font-family: 'Source Code Pro', monospace;
   padding: 0.2em;
   background-color: var(--secondary-dark);
+  letter-spacing: 0.05rem;
+  color: var(--text-light);
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+  zoom: 90%;
 }
-
+body::-webkit-scrollbar {
+    display: none;
+}
+h2 {
+  font-family: rubik, sans-serif;
+  color: var(--text-light);
+}
+a {
+  text-decoration: none;
+  color: var(--text-light);
+}
 </style>

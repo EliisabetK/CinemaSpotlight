@@ -19,15 +19,36 @@
         />
       </main>
     </div>
-    <div class="container">
+    <div class="arrowscroll">
       <button @click="scrollToFull" class="arrow">﹀</button>
     </div>
-    <div id="full"></div>
+      <div id="full">
+        <div class="empty"></div>
+        <div class="allMovies">
+          <select id="order" v-model="orderBy">
+            <option value="rating">Rating</option>
+            <option value="alphabet">Alphabet</option>
+            <option value="length">Length</option>
+          </select>
+        <Movie2
+          v-for="movie in orderedMovies"
+          :key="movie.id"
+          :id="movie.id"
+          :photo="movie.photo"
+          :name="movie.name"
+          :imdb="movie.imdb"
+          :letterboxd="movie.letterboxd"
+          :rottentomatoes="movie.rottentomatoes"
+          :releasedate="movie.releasedate"
+        />
+        </div>
+      </div>
   </div>
 </template>
 
 <script>
 import Movie from "@/components/Movie.vue";
+import Movie2 from "@/components/Movie2.vue";
 import { scrollTo } from "vue-scrollto";
 
 export default {
@@ -35,6 +56,7 @@ export default {
   data() {
     return {
       inCinemas: true,
+      orderBy: 'rating', // Default order by rating
     };
   },
   computed: {
@@ -49,9 +71,20 @@ export default {
         return this.movieList.filter((movie) => new Date(movie.releasedate) > currentDate);
       }
     },
+
+    orderedMovies() {
+      switch (this.orderBy) {
+        case 'alphabet':
+          return this.filteredMovies.slice().sort((a, b) => a.name.localeCompare(b.name));
+        case 'length':
+          return this.filteredMovies.slice().sort((a, b) => a.length - b.length);
+        default: // rating
+          return this.filteredMovies.slice().sort((a, b) => b.letterboxd - a.letterboxd);
+      }
+    },
   },
   components: {
-    Movie,
+    Movie, Movie2
   },
   methods: {
     toggleInCinemas(value) {
@@ -144,7 +177,7 @@ a {
   bottom: 0;
   height: 0;
   width: 100%;
-  background-color: #e6d054;
+  background-color: var(--accent-yellow);
   transition: 0.4s ease;
   z-index: -1;
 }
@@ -161,7 +194,7 @@ a {
   border: none; 
   padding: 0; 
   transition: border-width 150ms ease-in-out;
-  margin-top: -0.5em;
+  margin-top: -1em;
 }
 
 .arrow:hover {
@@ -175,11 +208,37 @@ a {
   justify-content: center;
   background-color: var(--secondary-dark);
   z-index: -2;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 #full {
   height: 100vh;
   background-color: var(--secondary-dark);
   z-index: -2;
+}
+.arrowscroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3em;
+}
+
+#order {
+  margin-top: 4em;
+  margin-left: 65em;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  border: 3px solid var(--primary-light);
+  border-radius: 5px;
+  background-color: var(--primary-dark);
+  color: #e6d054;
+}
+
+#order:hover {
+  border-color: var(--primary-light);
+}
+.empty {
+  height: 4.5em;
 }
 </style>
