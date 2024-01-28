@@ -1,6 +1,5 @@
 <template>
  <Background>
-    <!-- Your component content goes here -->
     <div id="app">
       <Header></Header>
       <router-view/>
@@ -54,12 +53,16 @@ export default {
   --secondary-dark: #000000;
   
   /* Background Colors */
-  --accent-light: #E4D9FF;
-  --accent-dark: #8687B4;
+  --accent-light: #acd3ec;
+  --accent-dark: #81b0f7;
   --accent-yellow: #e6d054;
+  --accent-yellow-hover: rgb(255, 236, 128);
+
   
   /* Text Colors */
   --text-light: #FAFAFF;
+  --text-dark: #1e1e2b;
+
 }
 
 body {
@@ -77,6 +80,10 @@ body::-webkit-scrollbar {
     display: none;
 }
 h2 {
+  font-family: rubik, sans-serif;
+  color: var(--text-light);
+}
+h3 {
   font-family: rubik, sans-serif;
   color: var(--text-light);
 }

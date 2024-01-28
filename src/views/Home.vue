@@ -167,7 +167,7 @@ a {
 }
 
 .btn:hover {
-  color: #1e1e2b;
+  color: var(--text-dark);
   transition-delay: 0.5s;
   z-index: 1;
 }
