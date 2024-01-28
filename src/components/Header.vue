@@ -29,7 +29,7 @@
   position: fixed;
   width: 100%;
   padding: 0.7em;
-  background-color: var(--primary-color);
+  background-color: rgba(var(--primary-color-rgb), 0.0);
   display: flex;
   flex-direction: column; 
   align-items: left; 

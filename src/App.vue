@@ -62,6 +62,7 @@ export default {
   /* Text Colors */
   --text-light: #FAFAFF;
   --text-dark: #1e1e2b;
+  --text-color: rgb(224, 224, 224);
 
 }
 

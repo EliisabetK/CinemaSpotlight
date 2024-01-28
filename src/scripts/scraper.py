@@ -118,6 +118,7 @@ def save_to_database(movies):
         password="eliisabet"
     )
     cursor = conn.cursor()
+    cursor.execute('DROP TABLE IF EXISTS movies')
 
     # Create a table if it doesn't exist
     cursor.execute('''

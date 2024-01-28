@@ -130,6 +130,7 @@ def save_to_database(movies):
         password="eliisabet"
     )
     cursor = conn.cursor()
+    cursor.execute('DROP TABLE IF EXISTS movies')
 
     # Create a table if it doesn't exist
     cursor.execute('''
@@ -147,18 +148,17 @@ def save_to_database(movies):
 
     # Insert data into the table with ON CONFLICT clause, only if director is not None
     for movie in movies:
-        if movie['director'] is not None:
-            cursor.execute(sql.SQL('''
-                INSERT INTO movies (name, director, length, releasedate, tmdb,summary, photo)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (name) DO UPDATE
-                SET director = EXCLUDED.director,
-                    length = EXCLUDED.length,
-                    releasedate = EXCLUDED.releasedate,
-                    tmdb = EXCLUDED.tmdb,
-                    summary = EXCLUDED.summary,
-                    photo = EXCLUDED.photo
-            '''), (movie['title'], movie['director'], movie['runtime'], movie['releasedate'], movie['tmdb'], movie['summary'], movie['cover']))
+        cursor.execute(sql.SQL('''
+            INSERT INTO movies (name, director, length, releasedate, tmdb,summary, photo)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (name) DO UPDATE
+            SET director = EXCLUDED.director,
+                length = EXCLUDED.length,
+                releasedate = EXCLUDED.releasedate,
+                tmdb = EXCLUDED.tmdb,
+                summary = EXCLUDED.summary,
+                photo = EXCLUDED.photo
+        '''), (movie['title'], movie['director'], movie['runtime'], movie['releasedate'], movie['tmdb'], movie['summary'], movie['cover']))
 
     conn.commit()
     conn.close()

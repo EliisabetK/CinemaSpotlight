@@ -2,7 +2,7 @@
     <div class="grid-container">
       <img :src="photo" alt="Movie Cover" class="cover">
       <div class="movie-info info">
-        <h2>{{ name }} ( {{ length }} min )</h2>
+        <h2>{{ name }} <span>({{ length }} minutes)</span></h2>
         <h3>{{ director }} ({{ formatDate(releasedate) }})</h3>
         {{ summary }}
       </div>
@@ -109,7 +109,9 @@
     scrollbar-width: thin;
     scrollbar-color: var(--accent-yellow) var(--primary-color);
   }
-
+  .info p {
+    line-height: 150%;
+  }
   /* Webkit (Chrome, Safari) scrollbar styles */
   .info::-webkit-scrollbar {
     width: 0.5em;
@@ -126,6 +128,13 @@
 
   .info h2{
     margin-top: -0em;
+  }
+  .info h2 span {
+    font-weight: lighter;
+    font-size: smaller; /* or the desired font weight for the span */
+  } 
+  h3{
+    color: var(--text-color);
   }
   
   .ratings {
