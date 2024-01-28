@@ -10,20 +10,25 @@
         <p>
           {{ rottentomatoes > 50 ? '🍅' : '🤢' }} {{ rottentomatoes }}%
         </p>
-        <p>In cinemas</p>
+        <p>{{ new Date(releasedate) < currentDate ? 'In cinemas' : formatDate(releasedate) }}</p>
       </div>
     </div>
   </router-link>
 </template>
 
 <script>
+import formatDate from '@/mixins/formatDate.js';
+
 export default {
   name: 'Movie',
+  mixins: [formatDate],
   props: ['id', 'photo', 'name', 'imdb', 'letterboxd', 'rottentomatoes', 'releasedate'],
   methods: {
-    // ... any other methods you might need
   },
   computed: {
+    currentDate() {
+      return new Date();
+    },    
     computedStars() {
       let stars = '';
       let fullStars = Math.floor(this.letterboxd);
@@ -54,6 +59,11 @@ export default {
   margin-bottom: 1em;
   word-wrap: break-word;
   width: 15em;
+  transition: background-color 0.4s ease;
+}
+
+.movie:hover {
+  background-color: var(--primary-hover); 
 }
 
 .movie-cover {

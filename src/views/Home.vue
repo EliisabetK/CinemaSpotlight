@@ -7,7 +7,7 @@
     <div class="container">
       <main>
         <Movie
-          v-for="movie in filteredMovies"
+          v-for="movie in topRatedMovies"
           :key="movie.id"
           :id="movie.id"
           :photo="movie.photo"
@@ -22,14 +22,16 @@
     <div class="arrowscroll">
       <button @click="scrollToFull" class="arrow">﹀</button>
     </div>
-      <div id="full">
-        <div class="empty"></div>
-        <div class="allMovies">
-          <select id="order" v-model="orderBy">
-            <option value="rating">Rating</option>
-            <option value="alphabet">Alphabet</option>
-            <option value="length">Length</option>
-          </select>
+    <div id="full" class="full-section">
+      <video id="fullVideo" playsinline autoplay muted loop>
+        <source src="@/assets/background.mp4" type="video/mp4">
+      </video>
+      <div class="empty"></div>
+      <div class="allMovies">
+        <select id="order" v-model="orderBy" class="select-css">
+        <option value="rating" class="option">Rating</option>
+        <option value="alphabet" class="option">Alphabet</option>
+    </select>
         <Movie2
           v-for="movie in orderedMovies"
           :key="movie.id"
@@ -41,8 +43,8 @@
           :rottentomatoes="movie.rottentomatoes"
           :releasedate="movie.releasedate"
         />
-        </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -52,7 +54,7 @@ import Movie2 from "@/components/Movie2.vue";
 import { scrollTo } from "vue-scrollto";
 
 export default {
-  name: "MainView",
+  name: "Home",
   data() {
     return {
       inCinemas: true,
@@ -70,6 +72,9 @@ export default {
       } else {
         return this.movieList.filter((movie) => new Date(movie.releasedate) > currentDate);
       }
+    },
+    topRatedMovies() {
+      return this.filteredMovies.sort((a, b) => b.letterboxd - a.letterboxd).slice(0, 4);
     },
 
     orderedMovies() {
@@ -99,6 +104,7 @@ export default {
     this.$store.dispatch("fetchMovies");
     console.log("mounted");
   },
+  
 };
 </script>
 
@@ -206,16 +212,25 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--secondary-dark);
   z-index: -2;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
 
 #full {
+  min-height: 150%;
   height: 100vh;
-  background-color: var(--secondary-dark);
-  z-index: -2;
+  z-index: 0;
+  position: relative;
+}
+#full video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
 }
 .arrowscroll {
   display: flex;
@@ -225,19 +240,59 @@ a {
 }
 
 #order {
-  margin-top: 4em;
-  margin-left: 65em;
-  padding: 0.5em 1em;
-  font-size: 1em;
-  border: 3px solid var(--primary-light);
-  border-radius: 5px;
-  background-color: var(--primary-dark);
-  color: #e6d054;
+    margin-top: 4em;
+    margin-left: 65em;
+    padding: 0.5em 1em;
+    font-size: 1em;
+    border: 3px solid var(--primary-dark);
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: #e6d054;
+    width: 10%;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e6d054%22%20d%3D%22M287%2069a18%2018%200%200%200-13-5H18c-5%200-9%203-12%207a18%2018%200%200%200-1%2013c0%205%202%2010%205%2013l128%20128c4%204%2010%205%2013%205s9-1%2013-5L287%2082c4-3%205-8%205-13%200-5-1-9-5-13z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right .7em top 50%;
+    background-size: .65em auto;
 }
 
-#order:hover {
-  border-color: var(--primary-light);
+#order:focus {
+    outline: none;
 }
+
+.option {
+  border-color: var(--primary-hover);
+  border-radius: 5px;
+  padding: 5px;
+  transition: 300ms;
+  background-color: #2a2f3b;
+  width: 150px;
+  font-size: 15px;
+}
+
+.option:hover {
+  background-color: #323741;
+  border-color: var(--primary-hover);
+  font-size: 25px;
+  outline: none;
+}
+
+.select-css:focus {
+    outline: none;
+}
+
+.select-css .option {
+    border: 1px solid var(--primary-dark);
+    outline: none !important;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.select-css .option:hover {
+    background-color: #323741 !important; 
+    color: #e6d054 !important; 
+}
+
 .empty {
   height: 4.5em;
 }

@@ -12,7 +12,7 @@ const routes = [
   },
 
   {
-    path: "/AMovie/:movieId",
+    path: "/AMovie/:id",
     name: "AMovie",
     component: AMovie,
   },
@@ -21,6 +21,10 @@ const routes = [
     name: "Info",
     component: Info,
   },
+  {
+    path: "/",
+    redirect: "/home",
+  }
 ];
 
 const router = createRouter({

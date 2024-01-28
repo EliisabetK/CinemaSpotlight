@@ -1,7 +1,7 @@
 <template>
     <header class="header">
       <div>
-        <router-link to="/Home">Home</router-link>
+        <router-link to="/Home" @click.native="scrollToTop">Home</router-link>
         <span class="separator">|</span>
         <router-link to="/Info">Info</router-link>
       </div>
@@ -9,10 +9,20 @@
   </template>
   
   <script>
+  
   export default {
-    name: 'Header',
+    name: 'Home',
+    methods: {
+      scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      },
+    },
   };
   </script>
+  
   
   <style scoped>
   .header {

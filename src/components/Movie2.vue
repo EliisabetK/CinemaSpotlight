@@ -13,15 +13,13 @@
 </template>
   
   <script>
+  import formatDate from '@/mixins/formatDate.js';
   export default {
     name: 'Movie2',
+    mixins: [formatDate],
     props: ['id', 'photo', 'name', 'imdb', 'letterboxd', 'rottentomatoes', 'releasedate'],
     methods: {
-      formatDate(dateString) {
-        const releasedate = new Date(dateString);
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return releasedate.toLocaleDateString(undefined, options);
-      },
+    
     },
     computed: {
     },
@@ -40,8 +38,12 @@
     height: 7em;
     margin-left: 10em;
     margin-bottom: 4em;
+    transition: background-color 0.4s ease;
+
   }
-  
+  .movie:hover {
+  background-color: var(--primary-hover); 
+}
   .movie-cover {
     width: 7em;
     height: 7em;
