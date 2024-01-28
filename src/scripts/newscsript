@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import psycopg2
 from psycopg2 import sql
 from datetime import datetime
-import requests
 import json
 
 # Function to convert movie length like '2h15' to minutes
@@ -57,20 +56,39 @@ def scrape_movie_data(url, api_key):
 
     # Replace these selectors with the actual HTML elements from the target website
     movie_elements = soup.select('.movie-card')
-    for movie_element in movie_elements:
-        score = None
 
+    for movie_element in movie_elements:
         # Extracting data
         title_element = movie_element.select_one('.movie-card__title a')
         cover_element = movie_element.select_one('.image__img')
-        summary_element = movie_element.select_one('.movie-card__details .description')
 
         # Exclude movies with "OPERA" or "BALLET" in the title
         if 'OPERA' in title_element.text.upper() or 'BALLET' in title_element.text.upper():
             continue
-
+        
         title = title_element.text.strip()
         title = title.replace('Cinema Classics: ', '')  # Remove prefix if it exists
+
+        # Extract details from the movie details page
+        details_url = title_element['href']
+        details_response = requests.get(details_url)
+        details_soup = BeautifulSoup(details_response.text, 'html.parser')
+
+        # Use find_next_sibling to locate the next sibling element after the specified key element
+        director_element = details_soup.find('p', string='Director')
+        director = director_element.find_next_sibling('p').text.strip() if director_element else None
+
+        runtime_element = details_soup.find('p', string='Run time')
+        runtime = runtime_element.find_next_sibling('p').text.strip() if runtime_element else None
+
+        releasedate_element = details_soup.find('p', string='In Cinemas')
+        releasedate_str = releasedate_element.find_next_sibling('p').text.strip() if releasedate_element else None
+
+        # Adjust the date format
+        releasedate = datetime.strptime(releasedate_str, '%m/%d/%Y') if releasedate_str else None
+
+        summary_element = details_soup.select_one('.movie-details__description .text')
+        summary = trim_summary(summary_element.text.strip()) if summary_element else None
 
         link = title_element['href']
         cover = cover_element['data-srcset'].split(' ')[-2]  # Extracting the last URL in the srcset
@@ -79,33 +97,27 @@ def scrape_movie_data(url, api_key):
         cover = process_image_link(cover)
 
         # Convert the runtime to minutes
-        runtime_element = movie_element.select_one('.movie-card__duration span')
-        runtime_in_minutes = convert_runtime_to_minutes(runtime_element.text.strip()) if runtime_element else None
-
-        # Extract summary
-        summary = trim_summary(summary_element.text.strip()) if summary_element else None
+        runtime_in_minutes = convert_runtime_to_minutes(runtime)
 
         tmdb_movie_details = get_movie_details_from_tmdb(title, api_key)
-        if tmdb_movie_details:
-            # Extract director information
-            director = ', '.join([crew['name'] for crew in tmdb_movie_details.get('crew', []) if crew['job'] == 'Director'])
 
-            # Extract releasedate information
-            releasedate_str = tmdb_movie_details.get('release_date')
-            releasedate = datetime.strptime(releasedate_str, '%Y-%m-%d') if releasedate_str else None
-
+        if tmdb_movie_details is not None and 'vote_average' in tmdb_movie_details:
             score = tmdb_movie_details['vote_average']
-            movies.append({
-                'title': title,
-                'link': link,
-                'cover': cover,
-                'director': director,  # Add director to movie data
-                'runtime': runtime_in_minutes,
-                'releasedate': releasedate,  # Add releasedate to movie data
-                'summary': summary,  # Add summary to movie data
-                'score': score,  # Add the score to your movie data
-            })
-        print(f"Title: {title}, Director: {director}, Length: {runtime_in_minutes}, Summary: {summary}, Score: {score}")
+        else:
+            score = None
+
+        movies.append({
+            'title': title,
+            'link': link,
+            'cover': cover,
+            'director': director,
+            'runtime': runtime_in_minutes,
+            'releasedate': releasedate,
+            'tmdb': score,
+            'summary': summary,
+        })
+        print(f"Title: {title}, Director: {director}, Runtime: {runtime_in_minutes} minutes")
+
     return movies
 
 
@@ -127,29 +139,30 @@ def save_to_database(movies):
             director VARCHAR(200),
             length INTEGER,
             releasedate timestamp,
+            tmdb DECIMAL(3, 1),
             summary TEXT,
-            photo VARCHAR(1000),
-            score DECIMAL(3, 1)
+            photo VARCHAR(1000)
         )
     ''')
 
     # Insert data into the table with ON CONFLICT clause, only if director is not None
     for movie in movies:
-        cursor.execute(sql.SQL('''
-            INSERT INTO movies (name, director, length, releasedate, photo, score)
-            VALUES (%s, %s, %s, %s, %s, %s)
-            ON CONFLICT (name) DO UPDATE
-            SET director = EXCLUDED.director,
-                length = EXCLUDED.length,
-                releasedate = EXCLUDED.releasedate,
-                photo = EXCLUDED.photo,
-                score = EXCLUDED.score  -- Update the score
-        '''), (movie['title'], movie['director'], movie['runtime'], movie['releasedate'], movie['cover'], movie['score']))
+        if movie['director'] is not None:
+            cursor.execute(sql.SQL('''
+                INSERT INTO movies (name, director, length, releasedate, tmdb,summary, photo)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (name) DO UPDATE
+                SET director = EXCLUDED.director,
+                    length = EXCLUDED.length,
+                    releasedate = EXCLUDED.releasedate,
+                    tmdb = EXCLUDED.tmdb,
+                    summary = EXCLUDED.summary,
+                    photo = EXCLUDED.photo
+            '''), (movie['title'], movie['director'], movie['runtime'], movie['releasedate'], movie['tmdb'], movie['summary'], movie['cover']))
 
     conn.commit()
     conn.close()
 
-# Example usage
 api_key = 'de150413238cb1ec0252f5c6374f3691'
 url = 'https://www.apollokino.ee/eng/movies?fromLang=1001'
 movies_data = scrape_movie_data(url, api_key)

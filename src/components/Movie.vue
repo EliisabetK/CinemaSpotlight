@@ -8,7 +8,7 @@
           <span v-for="star in computedStars" :key="star" class="star">{{ star }}</span>
         </div>
         <p>
-          {{ rottentomatoes > 50 ? '🍅' : '🤢' }} {{ rottentomatoes }}%
+            {{ tmdb*10 > 50 ? '🍅' : '🤢' }} {{ tmdb*10 }}%
         </p>
         <p>{{ new Date(releasedate) < currentDate ? 'In cinemas' : formatDate(releasedate) }}</p>
       </div>
@@ -22,7 +22,7 @@ import formatDate from '@/mixins/formatDate.js';
 export default {
   name: 'Movie',
   mixins: [formatDate],
-  props: ['id', 'photo', 'name', 'imdb', 'letterboxd', 'rottentomatoes', 'releasedate'],
+  props: ['id', 'photo', 'name', 'tmdb', 'releasedate'],
   methods: {
   },
   computed: {
@@ -31,8 +31,9 @@ export default {
     },    
     computedStars() {
       let stars = '';
-      let fullStars = Math.floor(this.letterboxd);
-      let halfStar = this.letterboxd - fullStars;
+      let score = this.tmdb / 2;
+      let fullStars = Math.floor(score);
+      let halfStar = score - fullStars;
       let emptyStars = 5 - fullStars - 1;
       for (let i = 0; i < fullStars; i++) {
         stars += '\u2605'; // Unicode for a solid star

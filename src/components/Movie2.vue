@@ -5,7 +5,7 @@
       <router-link :to="'/amovie/' + id">
         <h2>{{ name }} ({{ formatDate(releasedate) }})</h2>
         <p>
-          IMDb {{ imdb }} | {{ rottentomatoes > 50 ? '🍅' : '🤢' }} {{ rottentomatoes }}% | Letterboxd {{ letterboxd }}
+          IMDb {{ tmdb }} | {{ tmdb*10 > 50 ? '🍅' : '🤢' }} {{ tmdb*10 }}% | Letterboxd {{ Math.round(tmdb/2 * 10) / 10 }}
         </p>
       </router-link>
     </div>
@@ -17,7 +17,7 @@
   export default {
     name: 'Movie2',
     mixins: [formatDate],
-    props: ['id', 'photo', 'name', 'imdb', 'letterboxd', 'rottentomatoes', 'releasedate'],
+    props: ['id', 'photo', 'name', 'tmdb', 'releasedate'],
     methods: {
     
     },

@@ -12,9 +12,7 @@
           :id="movie.id"
           :photo="movie.photo"
           :name="movie.name"
-          :imdb="movie.imdb"
-          :letterboxd="movie.letterboxd"
-          :rottentomatoes="movie.rottentomatoes"
+          :tmdb="movie.tmdb"
           :releasedate="movie.releasedate"
         />
       </main>
@@ -38,9 +36,7 @@
           :id="movie.id"
           :photo="movie.photo"
           :name="movie.name"
-          :imdb="movie.imdb"
-          :letterboxd="movie.letterboxd"
-          :rottentomatoes="movie.rottentomatoes"
+          :tmdb="movie.tmdb"
           :releasedate="movie.releasedate"
         />
       </div>
@@ -74,7 +70,7 @@ export default {
       }
     },
     topRatedMovies() {
-      return this.filteredMovies.sort((a, b) => b.letterboxd - a.letterboxd).slice(0, 4);
+      return this.filteredMovies.sort((a, b) => b.tmdb - a.tmdb).slice(0, 4);
     },
 
     orderedMovies() {
@@ -84,7 +80,7 @@ export default {
         case 'length':
           return this.filteredMovies.slice().sort((a, b) => a.length - b.length);
         default: // rating
-          return this.filteredMovies.slice().sort((a, b) => b.letterboxd - a.letterboxd);
+          return this.filteredMovies.slice().sort((a, b) => b.tmdb - a.tmdb);
       }
     },
   },

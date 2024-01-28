@@ -8,7 +8,7 @@
       </div>
       <div class="ratings">
         <p>
-          IMDb {{ imdb }} | {{ rottentomatoes > 50 ? '🍅' : '🤢' }} {{ rottentomatoes }}% | Letterboxd {{ letterboxd }}
+          IMDb {{ tmdb }} | {{ tmdb*10 > 50 ? '🍅' : '🤢' }} {{ tmdb*10 }}% | Letterboxd {{ Math.round(tmdb/2 * 10) / 10 }}
         </p>
       </div>
       <div class="cinema-selection cinema">
@@ -33,9 +33,7 @@
         director: '',
         photo: '',
         name: '',
-        imdb: '',
-        letterboxd: '',
-        rottentomatoes: '',
+        tmdb: '',
         releasedate: '',
         length: '',
         summary: '',
@@ -55,9 +53,7 @@
             this.director = data.director;
             this.photo = data.photo;
             this.name = data.name;
-            this.imdb = data.imdb;
-            this.letterboxd = data.letterboxd;
-            this.rottentomatoes = data.rottentomatoes;
+            this.tmdb = data.tmdb;
             this.releasedate = data.releasedate;
             this.length = data.length;
             this.summary = data.summary;          
