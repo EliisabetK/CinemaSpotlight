@@ -96,8 +96,10 @@
   
   .cover {
     grid-area: cover;
-    width: 20em;
-    height: 20em;
+    width: 23em;
+    height: 23em;
+    object-fit: cover;
+
   }
   
   .info {
@@ -105,7 +107,27 @@
     text-align: left;
     background-color: var(--primary-color);
     padding: 2em;
+    width: 40em;
+    height: 12em;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-yellow) var(--primary-color);
   }
+
+  /* Webkit (Chrome, Safari) scrollbar styles */
+  .info::-webkit-scrollbar {
+    width: 0.5em;
+  }
+
+  .info::-webkit-scrollbar-thumb {
+    background-color: var(--accent-yellow);
+    border-radius: 6px;
+  }
+
+  .info::-webkit-scrollbar-track {
+    background-color: var(--primary-color);
+  }
+
   .info h2{
     margin-top: -0em;
   }
@@ -117,6 +139,7 @@
     justify-content: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
   
   .cinema {

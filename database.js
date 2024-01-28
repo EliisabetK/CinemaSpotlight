@@ -23,9 +23,9 @@ const createMovieTableQuery = `
   CREATE TABLE IF NOT EXISTS "movies" (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(200) NOT NULL UNIQUE,
-    director VARCHAR(200) NOT NULL,
-    length INTEGER NOT NULL,
-    releasedate timestamp NOT NULL,
+    director VARCHAR(200),
+    length INTEGER,
+    releasedate timestamp,
     imdb DECIMAL(3, 1),
     letterboxd DECIMAL(3, 1),
     rottentomatoes DECIMAL(3),

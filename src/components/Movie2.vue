@@ -48,6 +48,8 @@
     width: 7em;
     height: 7em;
     margin-bottom: -0.1em;
+    object-fit: cover;
+
   }
   
   .movie-info {

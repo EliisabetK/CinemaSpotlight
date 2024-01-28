@@ -60,6 +60,7 @@ export default {
   word-wrap: break-word;
   width: 15em;
   transition: background-color 0.4s ease;
+  height:26em;
 }
 
 .movie:hover {
@@ -70,6 +71,7 @@ export default {
   width: 15em;
   height: 15em;
   margin-bottom: -0.1em;
+  object-fit: cover;
 }
 
 .movie-info {
