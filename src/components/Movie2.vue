@@ -77,10 +77,12 @@
       margin-bottom: 0.25em;
     }
   }
-  
-  .star {
-    color: #e6d054;
-    font-size: 30px;
+  @media(max-width: 600px){
+    .movie{
+      width: 27em;
+    }
   }
+
+
   </style>
   

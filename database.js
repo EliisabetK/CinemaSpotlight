@@ -37,7 +37,6 @@ execute(createMovieTableQuery)
     if (result) {
       console.log('Table "movies" is created');
       // After creating the table, insert sample data
-      return execute(insertMovieDataQuery);
     }
   })
   .then((insertResult) => {

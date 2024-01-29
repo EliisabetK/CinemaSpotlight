@@ -95,7 +95,6 @@
     width: 23em;
     height: 23em;
     object-fit: cover;
-
   }
   
   .info {
@@ -187,5 +186,82 @@
     -webkit-appearance:none; 
     appearance:none;
 }
+
+@media(max-width: 600px) {
+    .grid-container {
+      grid-template-areas:
+        'cover'
+        'info'
+        'ratings'
+        'cinema';
+      gap: 10px;
+      padding: 10px;
+      justify-content: center;
+      margin-top: 5em; 
+      margin-left: 1em;
+      padding-bottom: 5em;
+    }
+
+    .cover {
+      grid-area: cover;
+      width: 90%; 
+      height: 15em;
+      object-fit: cover;
+      margin-top: 0; 
+    }
+
+    .info {
+      grid-area: info;
+      text-align: left;
+      background-color: var(--primary-color);
+      padding: 1em;
+      width: 90%; 
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-yellow) var(--primary-color);
+      margin-top: 1em; 
+    }
+
+    .info h2 {
+      margin-top: 0; /* Adjust margin as needed */
+    }
+
+    .info h2 span {
+      font-weight: lighter;
+      font-size: smaller;
+    }
+
+    h3 {
+      color: var(--text-color);
+    }
+
+    .ratings {
+      grid-area: ratings;
+      padding: 1em;
+      background-color: var(--primary-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width:90%; 
+    }
+
+    .cinema {
+      display: flex;
+      grid-area: cinema;
+      padding: 1em;
+      background-color: var(--primary-color);
+      flex-direction: row;
+      gap: 1em;
+      justify-content: center;
+      width: 90%; 
+    }
+    
+    .cover, .info, .ratings, .cinema {
+      margin-top: 0.5em;
+    }
+    #cinema, button {
+      width:50%; 
+    }
+  }
   </style>
   

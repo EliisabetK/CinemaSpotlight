@@ -12,6 +12,7 @@
             </div>
         
             <div class="feedback-box">
+              <h3>Feedback: </h3>
               <form>      
               <input name="name" type="text" class="feedback-input" placeholder="Name" />   
               <input name="email" type="text" class="feedback-input" placeholder="Email" />
@@ -71,15 +72,15 @@ form {
   border-radius: 5px;
   line-height: 22px;
   background-color: transparent;
-  border:2px solid var(--accent-yellow);
+  border:2px solid var(--text-light);
   transition: all 0.3s;
   padding: 13px;
   margin-bottom: 15px;
   width:100%;
   box-sizing: border-box;
   outline:0;
-  
 }
+
 input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px var(--secondary-dark) inset !important;
   -webkit-text-fill-color: var(--text-light) !important; 
@@ -138,7 +139,7 @@ textarea {
 h3 {
   font-size: 1.5em;
   margin-top: 1em;
-  margin-bottom: 0;
+  margin-bottom: -2em;
 }
 li {
   margin-top: 1em;
@@ -146,5 +147,42 @@ li {
 
 .references {
   margin-top: 17em;
+}
+@media(max-width: 600px) {
+  form { 
+    max-width: 100%; /* Set the form width to 100% of the viewport */
+    margin-left: 0; /* Remove margin-left for better alignment */
+    color: var(--text-light);
+  }
+
+  .feedback-box {
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1em;
+    height: auto; 
+    margin-left: 0; 
+    margin-bottom: 1em;
+  }
+
+  .contacts {
+    width: 20em;
+    border-radius: 0;
+    padding: 1em;
+    margin-top: 2em;
+  }
+
+  .additional-info {
+    width: 100%;
+  }
+
+  .container2 {
+    width: 100%;
+  }
+
+  .references {
+    margin-top: 1em;
+  }
 }
 </style>

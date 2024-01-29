@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="toggle-container">
-      <button class="btn" @click="toggleInCinemas(true)">In cinemas</button>
-      <button class="btn" @click="toggleInCinemas(false)">Coming soon</button>
+      <button class="btn" id="incinemas" @click="toggleInCinemas(true)">In cinemas</button>
+      <button class="btn" id="comingsoon" @click="toggleInCinemas(false)">Coming soon</button>
     </div>
     <div class="container">
       <main>
@@ -291,5 +291,41 @@ a {
 
 .empty {
   height: 4.5em;
+}
+
+@media(max-width: 600px) {
+  main {
+    justify-content: flex-start; /* Align movies to the start */
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row; /* Change to column layout for mobile */
+    overflow-x: auto;
+    align-items: center;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  .allMovies {
+    margin-left: -7em; /* Remove negative margin */
+  }
+
+  .toggle-container {
+    margin-right: 6em; 
+    margin-bottom: 1em;
+  }
+
+  #incinemas {
+    margin-right: 0; /* Adjust margin for better alignment */
+  }
+
+  #comingsoon {
+    margin-left: 0; /* Adjust margin for better alignment */
+  }
+
+  #order {
+    margin-left: 10em; /* Adjust margin for better alignment */
+    width: 20%; /* Make the select full width */
+    margin-bottom: 1em;
+  }
 }
 </style>

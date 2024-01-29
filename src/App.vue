@@ -58,7 +58,6 @@ export default {
   --accent-yellow: #e6d054;
   --accent-yellow-hover: rgb(255, 236, 128);
 
-  
   /* Text Colors */
   --text-light: #FAFAFF;
   --text-dark: #1e1e2b;

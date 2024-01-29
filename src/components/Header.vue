@@ -1,38 +1,36 @@
 <template>
-    <header class="header">
-      <div>
-        <router-link to="/Home" @click.native="scrollToTop">Home</router-link>
-        <span class="separator">|</span>
-        <router-link to="/Info">Info</router-link>
-      </div>
-    </header>
-  </template>
-  
-  <script>
-  
-  export default {
-    name: 'Home',
-    methods: {
-      scrollToTop() {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-      },
+  <header class="header">
+    <div>
+      <router-link to="/Home" @click.native="scrollToTop">HOME</router-link>
+      <span class="separator">|</span>
+      <router-link to="/Info">INFO</router-link>
+    </div>
+  </header>
+</template>
+
+<script>
+export default {
+  name: 'Home',
+  methods: {
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     },
-  };
-  </script>
-  
-  
-  <style scoped>
-  .header {
+  },
+};
+</script>
+
+<style scoped>
+.header {
   position: fixed;
   width: 100%;
   padding: 0.7em;
-  background-color: rgba(var(--primary-color-rgb), 0.0);
+  background: linear-gradient(to bottom, rgba(100, 101, 102, 0.5), transparent);
   display: flex;
-  flex-direction: column; 
-  align-items: left; 
+  flex-direction: column;
+  align-items: left;
   position: fixed;
   top: 0;
   z-index: 1000;
@@ -44,7 +42,7 @@
   font-size: 1.5em;
   margin-bottom: -0em;
   margin-top: -0em;
-  color: #ECECEA;
+  color: var(--text-light);
 }
 
 .header a {
@@ -62,6 +60,6 @@
 .separator {
   font-size: 1.3em;
   margin: 0 10px;
-  color: #ECECEA;
+  color: var(--text-light);
 }
-  </style>
+</style>
