@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import psycopg2
 from psycopg2 import sql
-from datetime import datetime
+import datetime
 import requests
 import json
 from selenium import webdriver
@@ -14,7 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
-
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 # Function to convert movie length like '2h15' to minutes
 def convert_runtime_to_minutes(runtime):
@@ -30,7 +30,19 @@ def convert_runtime_to_minutes(runtime):
 
 # Function to trim the summary to 1000 characters if necessary
 def trim_summary(summary):
-    return summary[:1000] if summary else None
+    if summary and len(summary) > 1000:
+        # Find the last occurrence of a period within the first 1000 characters
+        last_period_index = summary[:1000].rfind('.')
+        
+        # If a period is found within the first 1000 characters, trim the summary up to that point
+        if last_period_index != -1:
+            return summary[:last_period_index + 1]  # Include the period in the trimmed summary
+        else:
+            # If no period is found within the first 1000 characters, simply trim the summary to 1000 characters
+            return summary[:1000]
+    else:
+        return summary
+
 
 # Function to process image links
 def process_image_link(cover):
@@ -70,7 +82,10 @@ def get_movie_score_from_rt(title):
     driver.get(base_url)
     
     try:
-        button = driver.find_element(By.ID, "onetrust-accept-btn-handler")
+        try:
+            button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "onetrust-accept-btn-handler")))
+        except NoSuchElementException:
+            print("Could not find element with ID 'onetrust-accept-btn-handler'")
         button.click()
 
         # Wait for the movie page to load and find the score element
@@ -99,25 +114,25 @@ def get_movie_score_from_letterboxd(title):
 
     try:
         # Wait for the consent button to load and click it
-        consent_button = WebDriverWait(driver, 0.5).until(
-            EC.presence_of_element_located((By.XPATH, '//p[text()="Consent"]'))
-        )
-        consent_button.click()
+        #consent_button = WebDriverWait(driver, 5).until(
+        #    EC.presence_of_element_located((By.XPATH, '//p[text()="Consent"]'))
+        #)
+        #consent_button.click()
 
         # Wait for the page to load and find the first movie element
-        first_movie_element = WebDriverWait(driver, 0.5).until(
+        first_movie_element = WebDriverWait(driver, 1.5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '.film-poster'))
         )
 
         # Wait until the overlay is no longer present
-        WebDriverWait(driver, 0.5).until_not(
+        WebDriverWait(driver, 1.5).until_not(
             EC.presence_of_element_located((By.CSS_SELECTOR, '.fc-dialog-overlay'))
         )
 
         first_movie_element.click()
 
         # Wait for the movie page to load and find the score element
-        score_element = WebDriverWait(driver, 0.5).until(
+        score_element = WebDriverWait(driver,1.5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '.average-rating'))
         )
         score = float(score_element.text.strip())
@@ -127,73 +142,69 @@ def get_movie_score_from_letterboxd(title):
     driver.quit()
     return score
 
-
-# Function to scrape movie data from the Apollo page
 def scrape_movie_data(url, api_key):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    movies = []
-    movie_elements = soup.select('.movie-card')
-    for movie_element in movie_elements:
-        score = None
 
+    # Replace these selectors with the actual HTML elements from the target website
+    movie_elements = soup.select('.movie-card')
+
+    for movie_element in movie_elements:
         # Extracting data
         title_element = movie_element.select_one('.movie-card__title a')
         cover_element = movie_element.select_one('.image__img')
-        summary_element = movie_element.select_one('.movie-card__details .description')
 
         # Exclude movies with "OPERA" or "BALLET" in the title
         if 'OPERA' in title_element.text.upper() or 'BALLET' in title_element.text.upper():
             continue
 
-        title = title_element.text.strip()
-        title = title.replace('Cinema Classics: ', '')  # Remove prefix if it exists
+        # Extract details from the movie details page
+        details_url = title_element['href']
+        details_response = requests.get(details_url)
+        details_soup = BeautifulSoup(details_response.text, 'html.parser')
 
-        link = title_element['href']
+        # Use find_next_sibling to locate the next sibling element after the specified key element
+        director_element = details_soup.find('p', string='Director')
+        director = director_element.find_next_sibling('p').text.strip() if director_element else None
+
+        runtime_element = details_soup.find('p', string='Run time')
+        runtime = runtime_element.find_next_sibling('p').text.strip() if runtime_element else None
+
+        in_cinemas_element = details_soup.find('p', string='In Cinemas')
+        in_cinemas = in_cinemas_element.find_next_sibling('p').text.strip() if in_cinemas_element else None
+
+        # Check if in_cinemas is not None before converting it to datetime
+        if in_cinemas is not None:
+            releasedate = datetime.datetime.strptime(in_cinemas, '%m/%d/%Y')
+        else:
+            releasedate = None
+
+        summary_element = details_soup.select_one('.movie-details__description .text')
+        summary = trim_summary(summary_element.text.strip()) if summary_element else None
+
+        title = title_element.text.strip()
         cover = cover_element['data-srcset'].split(' ')[-2]  # Extracting the last URL in the srcset
 
         # Process the image link
         cover = process_image_link(cover)
 
         # Convert the runtime to minutes
-        runtime_element = movie_element.select_one('.movie-card__duration span')
-        runtime_in_minutes = convert_runtime_to_minutes(runtime_element.text.strip()) if runtime_element else None
+        runtime_in_minutes = convert_runtime_to_minutes(runtime)
 
-        # Extract summary
-        summary = trim_summary(summary_element.text.strip()) if summary_element else None
-
-        tmdb_movie_details = get_movie_details_from_tmdb(title, api_key)
-        if tmdb_movie_details:
-            # Extract director information
-            director = ', '.join([crew['name'] for crew in tmdb_movie_details.get('crew', []) if crew['job'] == 'Director'])
-
-            # Extract releasedate information
-            releasedate_str = tmdb_movie_details.get('release_date')
-            releasedate = datetime.strptime(releasedate_str, '%Y-%m-%d') if releasedate_str else None
-
-            score = tmdb_movie_details['vote_average']
-
-        # Get the Letterboxd score
+        tmdb=get_movie_details_from_tmdb(title, api_key)
+        if tmdb is not None:
+            tmdb_score = tmdb['vote_average']
+        else:
+            tmdb_score = None
         letterboxd_score = get_movie_score_from_letterboxd(title)
         rt_score = get_movie_score_from_rt(title)
 
-        movies.append({
-            'title': title,
-            'link': link,
-            'cover': cover,
-            'director': director,
-            'runtime': runtime_in_minutes,
-            'releasedate': releasedate,
-            'summary': summary,
-            'score': score,
-            'letterboxd_score': letterboxd_score, 
-            'rt_score': rt_score,
-                })
-        print(f"Title: {title}, Director: {director}, Length: {runtime_in_minutes}, Summary: {summary}, TMDB Score: {score}, Letterboxd Score: {letterboxd_score}, Rotten Tomatoes Score: {rt_score}")
-    return movies
+        # Insert the movie into the database
+        insert_movie_into_database(title, director, runtime_in_minutes, releasedate, summary, cover, tmdb_score, rt_score, letterboxd_score)
 
-# Function to save data to PostgreSQL database
-def save_to_database(movies):
+        print(f"Title: {title}, Director: {director}, Length: {runtime}, Summary: {summary}, TMDB Score: {tmdb_score}, Letterboxd Score: {letterboxd_score}, Rotten Tomatoes Score: {rt_score}")
+
+def insert_movie_into_database(title, director, runtime, releasedate, summary, cover, tmdb_score, rt_score, letterboxd_score):
     conn = psycopg2.connect(
         host="localhost",
         database="homework4",
@@ -201,39 +212,32 @@ def save_to_database(movies):
         password="eliisabet"
     )
     cursor = conn.cursor()
-    cursor.execute('DROP TABLE IF EXISTS movies')
-
-    # Create a table if it doesn't exist
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS movies (
-            id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-            name VARCHAR(200) NOT NULL UNIQUE,
-            director VARCHAR(200),
-            length INTEGER,
-            releasedate timestamp,
-            summary TEXT,
-            photo VARCHAR(1000),
-            score DECIMAL(3, 1)
-        )
-    ''')
 
     # Insert data into the table with ON CONFLICT clause, only if director is not None
-    for movie in movies:
-        cursor.execute(sql.SQL('''
-            INSERT INTO movies (name, director, length, releasedate, photo, score)
-            VALUES (%s, %s, %s, %s, %s, %s)
-            ON CONFLICT (name) DO UPDATE
-            SET director = EXCLUDED.director,
-                length = EXCLUDED.length,
-                releasedate = EXCLUDED.releasedate,
-                photo = EXCLUDED.photo,
-                score = EXCLUDED.score  -- Update the score
-        '''), (movie['title'], movie['director'], movie['runtime'], movie['releasedate'], movie['cover'], movie['score']))
+    tmdb_score = float(tmdb_score) if tmdb_score not in ('', None) else None
+    rt_score = float(rt_score) if rt_score not in ('', None) else None
+    letterboxd_score = float(letterboxd_score) if letterboxd_score not in ('', None) else None
+
+    cursor.execute(sql.SQL('''
+        INSERT INTO movies (name, director, length, releasedate, summary, photo, tmdb_score, rt_score, letterboxd_score)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (name) DO UPDATE
+        SET director = EXCLUDED.director,
+            length = EXCLUDED.length,
+            releasedate = EXCLUDED.releasedate,
+            summary = EXCLUDED.summary,
+            photo = EXCLUDED.photo,
+            tmdb_score = EXCLUDED.tmdb_score,
+            rt_score = EXCLUDED.rt_score,
+            letterboxd_score = EXCLUDED.letterboxd_score
+    '''), (title, director, runtime, releasedate, summary, cover, tmdb_score, rt_score, letterboxd_score))
 
     conn.commit()
     conn.close()
+
 
 # Example usage
 api_key = 'de150413238cb1ec0252f5c6374f3691'
 url = 'https://www.apollokino.ee/eng/movies?fromLang=1001'
 movies_data = scrape_movie_data(url, api_key)
+movies = [{'title': 'Beautiful Wedding', 'link': 'https://www.apollokino.ee/eng/event/5429/beautiful_wedding?theatreAreaID=1004', 'cover': 'http://mcswebsites.blob.core.windows.net/1013/Event_8890/landscape_fullhd/BeautifulWedding_3840x2160PX.jpg', 'director': 'Roger Kumble', 'runtime': 100, 'releasedate': datetime.datetime(2024, 2, 9, 0, 0), 'summary': 'It follows Abby and Travis, who after a crazy night in Las Vegas, discover they are married. They head to Mexico for a honeymoon with friends and family.', 'tmdb_score': 5.7, 'letterboxd_score': None, 'rt_score': ''}]
