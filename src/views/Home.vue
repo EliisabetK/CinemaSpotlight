@@ -29,7 +29,7 @@
       <div class="empty"></div>
       <div class="allMovies">
         <select id="order" v-model="orderBy" class="select-css">
-        <option value="rating" class="option">Leterboxd rating</option>
+        <option value="rating" class="option">Letterboxd rating</option>
         <option value="alphabet" class="option">Alphabetically</option>
         <option value="rt" class="option">Rotten Tomatoes</option>
         <option value="tmdb" class="option">TMDb rating</option>
