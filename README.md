@@ -25,6 +25,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Important: 
 Run scraper.py before running the server for first time setup to get current information
-
+I check on this project once in a while, so the scraper might temporarily not work.
 
 
