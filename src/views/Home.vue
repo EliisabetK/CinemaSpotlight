@@ -12,7 +12,9 @@
           :id="movie.id"
           :photo="movie.photo"
           :name="movie.name"
-          :tmdb="movie.tmdb"
+          :tmdb_score="movie.tmdb_score"
+          :rt_score="movie.rt_score"
+          :letterboxd_score="movie.letterboxd_score"
           :releasedate="movie.releasedate"
         />
       </main>
@@ -27,8 +29,11 @@
       <div class="empty"></div>
       <div class="allMovies">
         <select id="order" v-model="orderBy" class="select-css">
-        <option value="rating" class="option">Rating</option>
-        <option value="alphabet" class="option">Alphabet</option>
+        <option value="rating" class="option">Leterboxd rating</option>
+        <option value="alphabet" class="option">Alphabetically</option>
+        <option value="rt" class="option">Rotten Tomatoes</option>
+        <option value="tmdb" class="option">TMDb rating</option>
+
     </select>
         <Movie2
           v-for="movie in orderedMovies"
@@ -36,7 +41,9 @@
           :id="movie.id"
           :photo="movie.photo"
           :name="movie.name"
-          :tmdb="movie.tmdb"
+          :tmdb_score="movie.tmdb_score"
+          :rt_score="movie.rt_score"
+          :letterboxd_score="movie.letterboxd_score"
           :releasedate="movie.releasedate"
         />
       </div>
@@ -70,17 +77,19 @@ export default {
       }
     },
     topRatedMovies() {
-      return this.filteredMovies.sort((a, b) => b.tmdb - a.tmdb).slice(0, 4);
+      return this.filteredMovies.sort((a, b) => b.letterboxd_score - a.letterboxd_score).slice(0, 4);
     },
 
     orderedMovies() {
       switch (this.orderBy) {
         case 'alphabet':
           return this.filteredMovies.slice().sort((a, b) => a.name.localeCompare(b.name));
-        case 'length':
-          return this.filteredMovies.slice().sort((a, b) => a.length - b.length);
-        default: // rating
-          return this.filteredMovies.slice().sort((a, b) => b.tmdb - a.tmdb);
+        case 'rt':
+          return this.filteredMovies.slice().sort((a, b) => b.rt_score - a.rt_score);
+        case 'tmdb':
+          return this.filteredMovies.slice().sort((a, b) => b.tmdb_score - a.tmdb_score);
+        default: 
+          return this.filteredMovies.slice().sort((a, b) => b.letterboxd_score - a.letterboxd_score);
       }
     },
   },
@@ -92,7 +101,6 @@ export default {
       this.inCinemas = value;
     },
     scrollToFull() {
-      // Scroll to the element with id 'full' with a smooth animation
       scrollTo("#full", 800);
     },
   },
@@ -244,7 +252,7 @@ a {
     border-radius: 5px;
     background-color: var(--primary-color);
     color: #e6d054;
-    width: 10%;
+    width: 15%;
     appearance: none;
     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e6d054%22%20d%3D%22M287%2069a18%2018%200%200%200-13-5H18c-5%200-9%203-12%207a18%2018%200%200%200-1%2013c0%205%202%2010%205%2013l128%20128c4%204%2010%205%2013%205s9-1%2013-5L287%2082c4-3%205-8%205-13%200-5-1-9-5-13z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
@@ -257,8 +265,7 @@ a {
 }
 
 .option {
-  border-color: var(--primary-hover);
-  border-radius: 5px;
+  border-radius: 50px;
   padding: 5px;
   transition: 300ms;
   background-color: #2a2f3b;
@@ -293,12 +300,13 @@ a {
   height: 4.5em;
 }
 
+ /*mobile view*/
 @media(max-width: 600px) {
   main {
-    justify-content: flex-start; /* Align movies to the start */
+    justify-content: flex-start; 
     margin-top: 1em;
     display: flex;
-    flex-direction: row; /* Change to column layout for mobile */
+    flex-direction: row; 
     overflow-x: auto;
     align-items: center;
     margin-left: 1em;
@@ -306,7 +314,7 @@ a {
   }
 
   .allMovies {
-    margin-left: -7em; /* Remove negative margin */
+    margin-left: -7em;
   }
 
   .toggle-container {
@@ -315,16 +323,16 @@ a {
   }
 
   #incinemas {
-    margin-right: 0; /* Adjust margin for better alignment */
+    margin-right: 0;
   }
 
   #comingsoon {
-    margin-left: 0; /* Adjust margin for better alignment */
+    margin-left: 0;
   }
 
   #order {
-    margin-left: 10em; /* Adjust margin for better alignment */
-    width: 20%; /* Make the select full width */
+    margin-left: 10em;
+    width: 20%; 
     margin-bottom: 1em;
   }
 }

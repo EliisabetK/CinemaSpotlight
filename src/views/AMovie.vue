@@ -8,7 +8,7 @@
       </div>
       <div class="ratings">
         <p>
-          IMDb {{ tmdb }} | {{ tmdb*10 > 50 ? '🍅' : '🤢' }} {{ tmdb*10 }}% | Letterboxd {{ Math.round(tmdb/2 * 10) / 10 }}
+          TMDb {{ tmdb_score }} | {{ rt_score > 50 ? '🍅' : '🤢' }} {{ rt_score }}% | Letterboxd {{ Math.round(letterboxd_score * 10) / 10 }}
         </p>
       </div>
       <div class="cinema-selection cinema">
@@ -33,12 +33,14 @@
         director: '',
         photo: '',
         name: '',
-        tmdb: '',
+        tmdb_score: '',
+        rt_score: '',
+        letterboxd_score: '',
         releasedate: '',
         length: '',
         summary: '',
         selectedCinema: '',
-        cinemas: ['Apollo kino', 'Viimsi kino'] // Add your cinemas here
+        cinemas: ['Apollo kino', 'Viimsi kino']
       }
     },
     methods: {
@@ -53,7 +55,9 @@
             this.director = data.director;
             this.photo = data.photo;
             this.name = data.name;
-            this.tmdb = data.tmdb;
+            this.tmdb_score = data.tmdb_score;
+            this.rt_score = data.rt_score;
+            this.letterboxd_score = data.letterboxd_score;
             this.releasedate = data.releasedate;
             this.length = data.length;
             this.summary = data.summary;          
@@ -181,10 +185,18 @@
   button:hover {
     background-color: var(--accent-yellow-hover);
   }
+
   select {
-    -moz-appearance:none; 
-    -webkit-appearance:none; 
-    appearance:none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url("data:image/svg+xml;utf8,<svg fill='yellow' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") no-repeat, var(--accent-dark);
+  background-position-x: 100%;
+  background-position-y: 50%;
+}
+
+select option {
+  background-color: var(--accent-dark);
 }
 
 @media(max-width: 600px) {
@@ -223,7 +235,7 @@
     }
 
     .info h2 {
-      margin-top: 0; /* Adjust margin as needed */
+      margin-top: 0;
     }
 
     .info h2 span {

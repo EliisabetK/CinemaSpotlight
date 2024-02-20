@@ -6,17 +6,13 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
-// We need to include "credentials: true" to allow cookies to be represented  
-// Also "credentials: 'include'" need to be added in Fetch API in the Vue.js App
-
-app.use(express.json()); // Parses incoming requests with JSON payloads and is based on body-parser.
-app.use(cookieParser()); // Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
+app.use(express.json()); 
+app.use(cookieParser());
 
 app.listen(port, () => {
     console.log("Server is listening to port " + port)
 });
 
-// Example route to get all movies
 app.get('/api/movies', async (req, res) => {
     try {
       console.log('Get movies request has arrived');
@@ -28,7 +24,6 @@ app.get('/api/movies', async (req, res) => {
     }
   });
   
-  // Example route to get a specific movie by ID
   app.get('/api/movies/:id', async (req, res) => {
     const movieId = req.params.id;
     try {

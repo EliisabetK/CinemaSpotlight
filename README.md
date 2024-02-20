@@ -1,4 +1,4 @@
-# homework3
+# Best movies playing in Estonia
 
 ## Project setup
 ```
@@ -22,3 +22,9 @@ npm start
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Important: 
+Run scraper.py before running the server for first time setup to get current information
+
+
+
